@@ -16,23 +16,44 @@
     --radius:18px;
   }
 
-  html,body{height:100%}
+  /* base */
+  html{min-height:100%}
   body{
     margin:0;
     font-family: Georgia, serif;
     color:var(--ink);
-    background:url("landbackground.png") center/cover no-repeat fixed;
-    display:flex;align-items:center;justify-content:center;
+    background:url("landbackground.png") center/cover no-repeat;
+    /* desktop will add `fixed` below; mobile keeps scroll to avoid iOS jank */
+    display:flex;                         /* center horizontally */
+    justify-content:center;
+    align-items:center;                   /* desktop centered */
+    min-height:100vh;                     /* allow full-height page */
   }
 
-  .wrap {
+  /* MOBILE: let content start at top and scroll naturally */
+  @media (max-width:700px){
+    body{
+      align-items:flex-start;             /* no vertical hard-centering */
+      padding:16px 0 24px;                /* breathing room */
+      background-attachment:scroll;       /* override fixed for iOS */
+    }
+  }
+  /* DESKTOP: use fixed background + true centering */
+  @media (min-width:701px){
+    body{ background-attachment:fixed; }
+  }
+
+  /* Page wrapper */
+  .wrap{
     width:min(780px,94vw);
     display:flex; flex-direction:column; gap:16px;
-    align-items:center; justify-content:center;
+    align-items:center;
     padding:10px;
     box-sizing:border-box;
+    position:relative;
   }
 
+  /* Bubble card */
   .container{
     width:100%;
     text-align:center;
@@ -40,11 +61,28 @@
     backdrop-filter:blur(6px);
     border:1px solid var(--line);
     border-radius:var(--radius);
-    padding:36px 28px;
+    padding:22px 22px 32px;
     box-sizing:border-box;
     box-shadow:0 12px 40px rgba(0,0,0,.15);
     position:relative;
   }
+
+  /* Top row with Home button (prevents overlap) */
+  .topbar{
+    display:flex; align-items:center; justify-content:flex-start;
+    margin-bottom:6px; min-height:36px;
+  }
+  .homebtn{
+    display:none;                 /* hidden on home */
+    background:var(--paper);
+    border:1px solid var(--line);
+    color:var(--ink);
+    border-radius:999px;
+    padding:6px 12px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  .container:not([data-view="home"]) .homebtn{ display:inline-flex; }
 
   h1{
     margin:0 0 8px;
@@ -62,19 +100,12 @@
   }
 
   .view{
-    opacity:0;
-    transform:translateY(8px);
-    pointer-events:none;
-    height:0;
-    overflow:hidden;
+    opacity:0; transform:translateY(8px);
+    pointer-events:none; height:0; overflow:hidden;
     transition:opacity .22s ease,transform .22s ease;
   }
-
   .view.active{
-    opacity:1;
-    transform:none;
-    pointer-events:auto;
-    height:auto
+    opacity:1; transform:none; pointer-events:auto; height:auto;
   }
 
   .lead{
@@ -85,16 +116,10 @@
   }
 
   .actions{
-    display:flex;
-    flex-wrap:nowrap; /* desktop no wrap */
-    gap:10px;
-    justify-content:center;
-    max-width:none;
+    display:flex; flex-wrap:nowrap; gap:10px;
+    justify-content:center; max-width:none;
   }
-
-  @media (max-width:700px){
-    .actions{flex-wrap:wrap;} /* wrap on mobile */
-  }
+  @media (max-width:700px){ .actions{ flex-wrap:wrap; } }
 
   .link-btn{
     border:1px solid var(--line);
@@ -107,86 +132,52 @@
     transition:transform .15s,box-shadow .15s;
     font-size:14px;
   }
+  .link-btn:hover{ transform:translateY(-1px); box-shadow:0 6px 16px rgba(0,0,0,.12); }
 
-  .link-btn:hover{
-    transform:translateY(-1px);
-    box-shadow:0 6px 16px rgba(0,0,0,.12);
-  }
-
-  form{display:grid;gap:12px;margin-top:8px}
-
+  form{ display:grid; gap:12px; margin-top:8px; }
   input,textarea{
-    width:100%;
-    padding:12px;
-    border-radius:10px;
+    width:100%; padding:12px; border-radius:10px;
     border:1px solid rgba(60,50,30,.28);
-    background:rgba(255,255,255,.9);
-    font:inherit;
+    background:rgba(255,255,255,.9); font:inherit;
   }
-
-  textarea{min-height:120px;resize:vertical}
+  textarea{ min-height:120px; resize:vertical; }
 
   .btn{
-    display:inline-block;width:100%;max-width:220px;margin:4px auto 0;
-    background:var(--btn);color:#fff;border:none;border-radius:10px;
-    padding:12px 16px;font-weight:700;cursor:pointer;
+    display:inline-block; width:100%; max-width:220px; margin:4px auto 0;
+    background:var(--btn); color:#fff; border:none; border-radius:10px;
+    padding:12px 16px; font-weight:700; cursor:pointer;
     transition:background .2s,box-shadow .2s,transform .1s;
   }
+  .btn:hover{ background:var(--btn-hover); box-shadow:0 6px 16px rgba(0,0,0,.15); }
+  .btn:active{ transform:translateY(1px); }
 
-  .btn:hover{
-    background:var(--btn-hover);
-    box-shadow:0 6px 16px rgba(0,0,0,.15);
-  }
+  .note{ font-size:14px; color:#3b4a3e; opacity:.9; margin-top:10px; }
 
-  .btn:active{transform:translateY(1px)}
-
-  .back{
-    position:absolute;top:16px;left:16px;
-    background:rgba(255,255,255,.9);
-    border:1px solid var(--line);
-    color:var(--ink);
-    border-radius:999px;
-    padding:6px 14px;
-    font-weight:600;
-    cursor:pointer;
-    display:none;
-    z-index:10;
-  }
-
-  .container:not([data-view="home"]) .back{display:inline-block}
-
-  .note{font-size:14px;color:#3b4a3e;opacity:.9;margin-top:10px}
-
-  /* bottom-right badge area */
+  /* Badges:
+     - mobile: in-flow at bottom of content (no overlap)
+     - desktop: fixed to viewport bottom-right
+  */
   .badge-stack{
-    position:fixed;
-    right:16px;
-    bottom:16px;
-    display:flex;
-    flex-direction:row;
+    width:100%;
+    display:flex; justify-content:flex-end; align-items:flex-end;
     gap:12px;
-    align-items:flex-end;
+    margin-top:4px;
+    position:static;     /* mobile default = in flow */
+    right:auto; bottom:auto;
     z-index:20;
   }
-
   .corner-badge{
-    width:12vw;
-    max-width:80px;
-    opacity:.95;
+    width:20vw; max-width:100px; height:auto; opacity:.95;
     filter: drop-shadow(0 4px 10px rgba(0,0,0,.2));
   }
-
-  @media (max-width:600px){
+  @media (min-width:901px){
     .badge-stack{
-      flex-direction:column;
-      right:12px;
-      bottom:12px;
-      gap:10px;
+      position:fixed; right:20px; bottom:20px; width:auto; gap:12px;
     }
-    .corner-badge{
-      width:30vw;
-      max-width:120px;
-    }
+    .corner-badge{ width:12vw; max-width:100px; }
+  }
+  @media (max-width:600px){
+    .corner-badge{ width:30vw; max-width:120px; }
   }
 </style>
 </head>
@@ -194,10 +185,12 @@
 
 <div class="wrap">
   <main class="container" id="bubble" data-view="home" aria-live="polite">
-    <button class="back" id="backBtn">← Back</button>
+    <div class="topbar">
+      <button class="homebtn" id="homeBtn">← Home</button>
+    </div>
 
     <h1>MTL Practice</h1>
-    <div class="tagline">Sex intimacy and relationship coaching</div>
+    <div class="tagline">Sex, intimacy and relationship coaching</div>
 
     <!-- Home -->
     <section class="view active" id="home">
@@ -221,6 +214,14 @@
       </p>
     </section>
 
+     <!-- About / Sex Coaching -->
+     <section class="view" id="me">
+        <p class="lead">
+          Meet The Coach and learn more about the approach. I'm a licensed sex therapist and coach with a passion for helping people explore their sexuality and relationships.
+        </p>
+       
+      </section>
+
     <!-- Contact -->
     <section class="view" id="contact">
       <p class="lead">Send a note and I'll reply shortly:</p>
@@ -240,43 +241,39 @@
         Book Free Call
       </a>
       <p class="note">
-        Prefer email?
-        <a data-nav="contact" href="#contact" class="link-btn">Contact me</a>
+        Prefer email? <a data-nav="contact" href="#contact">Contact me</a>
       </p>
     </section>
   </main>
 
   <!-- Nav Buttons -->
-  <nav class="actions">
+  <nav class="actions" aria-label="Section navigation">
     <a data-nav="about" href="#about"  class="link-btn">What's Sex Coaching</a>
-    <a data-nav="about" href="#about"  class="link-btn">Meet The Coach</a>
+    <a data-nav="me" href="#me"  class="link-btn">Meet The Coach</a>
     <a data-nav="book"  href="#book"   class="link-btn">Book Free Call</a>
     <a data-nav="contact" href="#contact" class="link-btn">Questions</a>
-    <!-- <a data-nav="book"  href="#book"   class="link-btn">Scheduling</a> -->
   </nav>
-</div>
 
-<!-- bottom-right badges -->
-<div class="badge-stack">
-  <img src="sexcoachu.png" alt="Certification" class="corner-badge" />
-  <img src="boardofsexology.png" alt="Safe Space" class="corner-badge" />
-  <!-- <img src="safespace.png" alt="Safe Space" class="corner-badge" /> -->
-
+  <!-- Badges -->
+  <div class="badge-stack">
+    <img src="sexcoachu.png"        alt="Certification" class="corner-badge" />
+    <img src="boardofsexology.png"  alt="Board of Sexology" class="corner-badge" />
+  </div>
 </div>
 
 <script>
   const bubble = document.getElementById('bubble');
-  const views  = { home:'#home', about:'#about', contact:'#contact', book:'#book' };
-  const backBtn = document.getElementById('backBtn');
+  const views  = { home:'#home', about:'#about', contact:'#contact', book:'#book', me:'#me' };
+  const homeBtn = document.getElementById('homeBtn');
 
   function show(view){
     bubble.setAttribute('data-view', view);
-    for(const id of Object.keys(views)){
+    for (const id of Object.keys(views)){
       document.querySelector(views[id]).classList.toggle('active', id === view);
     }
   }
 
-  document.addEventListener('click', e=>{
+  document.addEventListener('click', (e)=>{
     const link = e.target.closest('[data-nav]');
     if(!link) return;
     e.preventDefault();
@@ -287,16 +284,17 @@
     }
   });
 
-  backBtn.addEventListener('click', ()=>{
+  homeBtn.addEventListener('click', ()=>{
     location.hash = '';
     show('home');
+    // scroll to top on mobile just in case
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
   function boot(){
     const hash = location.hash.replace('#','');
     show(views[hash] ? hash : 'home');
   }
-
   window.addEventListener('hashchange', boot);
   boot();
 </script>
