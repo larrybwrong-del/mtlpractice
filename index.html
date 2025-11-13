@@ -20,7 +20,7 @@
   html { min-height:100%}
   body{
     margin:0;
-    font-family: Georgia, serif;
+    font-family: Inter,Helvetica;
     color:var(--ink);
     background:url("landbackground.png") center/cover no-repeat;
     display:flex;                         /* center horizontally */
@@ -76,9 +76,9 @@
   .container{
     width:100%;
     text-align:center;
-    background:var(--paper);
-    backdrop-filter:blur(6px);
-    border:1px solid var(--line);
+    background:rgb(241 234 234 / 0%);
+    backdrop-filter:blur(10px);
+    /* border:1px solid var(--line); */
     border-radius:var(--radius);
     padding:22px 22px 32px;
     box-sizing:border-box;
@@ -104,10 +104,11 @@
   .container:not([data-view="home"]) .homebtn{ display:inline-flex; }
 
   h1{
+    font-family: Georgia, serif;
     margin:0 0 8px;
     font-size:clamp(32px,5vw,44px);
     font-weight:800;
-    color:var(--ink);
+    color:#2a5656;
     text-shadow:0 2px 4px rgba(0,0,0,.1);
   }
 
@@ -142,17 +143,21 @@
 
   .link-btn{
     border:1px solid var(--line);
-    background:rgba(255,255,255,.85);
-    color:var(--ink);
+    background:#2a5656;
+    color:#f3f1ef;
     padding:10px 14px;
-    border-radius:10px;
+    border-radius:25px;
     font-weight:600;
     text-decoration:none;
     transition:transform .15s,box-shadow .15s;
-    font-size:14px;
+    font-size:18px;
   }
   .link-btn:hover{ transform:translateY(-1px); box-shadow:0 6px 16px rgba(0,0,0,.12); }
 
+  .link-btn-free{
+color:#f1df97;
+
+}
   form{ display:grid; gap:12px; margin-top:8px; }
   input,textarea{
     width:100%; padding:12px; border-radius:10px;
@@ -260,9 +265,9 @@
 }
 
 /* Fluid type that won’t get huge on desktops */
-h1{ font-size: clamp(28px, 4.2vw, 44px); }
-.tagline{ font-size: clamp(16px, 2.2vw, 22px); }
-.lead{ font-size: clamp(15px, 2vw, 18px); line-height: 1.55; }
+h1{ font-size: clamp(30px, 4.1vw, 45px); }
+.tagline{ font-size: clamp(19px, 2.4vw, 25px); }
+.lead{ font-size: clamp(22px, 2.4vw, 24px); line-height: 1.6; }
 
 /* Tighter vertical padding on mobile */
 @media (max-width:700px){
@@ -284,9 +289,10 @@ h1{ font-size: clamp(28px, 4.2vw, 44px); }
 <div class="wrap">
       <!-- Nav Buttons -->
   <nav class="actions" aria-label="Section navigation">
+    <a data-nav="book"  href="#book"   class="link-btn">Book <span class="link-btn-free">FREE</span> Call</a>
+
     <a data-nav="about" href="#about"  class="link-btn">What's Sex Coaching</a>
     <a data-nav="me"    href="#me"     class="link-btn">Meet The Coach</a>
-    <a data-nav="book"  href="#book"   class="link-btn">Book Free Call</a>
     <a data-nav="contact" href="#contact" class="link-btn">Questions</a>
   </nav>
 
@@ -295,15 +301,15 @@ h1{ font-size: clamp(28px, 4.2vw, 44px); }
       <button class="homebtn" id="homeBtn">← Home</button>
     </div>
 
-    <h1>MTL Practice</h1>
-    <div class="tagline">Sex, intimacy and relationship coaching</div>
+    <h1>MTL PRACTICE</h1>
+    <div class="tagline">Sex, Intimacy & Relationship Coaching</div>
 
     <!-- Home -->
     <section class="view active" id="home">
       <p class="lead">
-        A grounded, compassionate space to explore intimacy, connection,
-        and relationship to self and others. Learn more, ask questions,
-        or book a free intro call when you're ready.
+        Welcome to Multiple Truths Land, a space for Everyone where we practice reclaiming our humanity through pleasure, honesty, authenticity, and a dash of humor. Guided by me, Coach Pau, and grounded in uncolonization and abolition -the ultimate goal is liberation. Buckle up -freedom's got layers! 
+<br><br>
+Schedule your FREE Call with me now!
       </p>
     </section>
 
