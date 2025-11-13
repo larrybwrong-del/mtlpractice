@@ -17,30 +17,49 @@
   }
 
   /* base */
-  html{min-height:100%}
+  html { min-height:100%}
   body{
     margin:0;
     font-family: Georgia, serif;
     color:var(--ink);
     background:url("landbackground.png") center/cover no-repeat;
-    /* desktop will add `fixed` below; mobile keeps scroll to avoid iOS jank */
     display:flex;                         /* center horizontally */
     justify-content:center;
     align-items:center;                   /* desktop centered */
-    min-height:100vh;                     /* allow full-height page */
+    min-height:100vh;
   }
 
-  /* MOBILE: let content start at top and scroll naturally */
+  /* MOBILE: content starts at top; avoid iOS fixed-bg jank */
   @media (max-width:700px){
     body{
-      align-items:flex-start;             /* no vertical hard-centering */
-      padding:16px 0 24px;                /* breathing room */
-      background-attachment:scroll;       /* override fixed for iOS */
+      align-items:flex-start;
+      padding:16px 0 24px;
+      background-attachment:scroll;
     }
   }
-  /* DESKTOP: use fixed background + true centering */
+  /* DESKTOP: fixed background */
   @media (min-width:701px){
     body{ background-attachment:fixed; }
+  }
+
+  /* Top-left logo (site-wide) */
+  .site-logo{
+    position:fixed;
+    top:14px; left:14px;
+    z-index:30;
+  }
+  .site-logo img{
+    display:block;
+    width:20vw;
+    max-width:140px;
+    height:auto;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,.22));
+    border-radius:0; /* keep logo edges exact */
+    background:transparent; /* ensure no background fill */
+}
+
+  @media (max-width:700px){
+    .site-logo img{ width:32vw; max-width:120px; }
   }
 
   /* Page wrapper */
@@ -67,7 +86,7 @@
     position:relative;
   }
 
-  /* Top row with Home button (prevents overlap) */
+  /* Top row with Home button */
   .topbar{
     display:flex; align-items:center; justify-content:flex-start;
     margin-bottom:6px; min-height:36px;
@@ -153,35 +172,83 @@
 
   .note{ font-size:14px; color:#3b4a3e; opacity:.9; margin-top:10px; }
 
-  /* Badges:
-     - mobile: in-flow at bottom of content (no overlap)
-     - desktop: fixed to viewport bottom-right
+  /* Certificates
+     - mobile: in-flow at bottom-left
+     - desktop: fixed to viewport bottom-left
   */
   .badge-stack{
     width:100%;
-    display:flex; justify-content:flex-end; align-items:flex-end;
+    display:flex; justify-content:flex-start; align-items:flex-end;
     gap:12px;
     margin-top:4px;
     position:static;     /* mobile default = in flow */
-    right:auto; bottom:auto;
+    left:auto; bottom:auto;
     z-index:20;
   }
+  
   .corner-badge{
     width:20vw; max-width:100px; height:auto; opacity:.95;
     filter: drop-shadow(0 4px 10px rgba(0,0,0,.2));
+    cursor:pointer;  /* pointer on hover */
+    border-radius:6px;
   }
   @media (min-width:901px){
     .badge-stack{
-      position:fixed; right:20px; bottom:20px; width:auto; gap:12px;
-    }
+    position:fixed; right:20px; bottom:20px; width:auto; gap:12px;
+  }
     .corner-badge{ width:12vw; max-width:100px; }
   }
   @media (max-width:600px){
     .corner-badge{ width:30vw; max-width:120px; }
   }
+
+
+  /* Image modal for full-screen certificate view */
+  .modal{
+    position:fixed; inset:0; z-index:100;
+    background:rgba(0,0,0,.85);
+    display:none; align-items:center; justify-content:center;
+    padding:20px;
+  }
+  .modal.open{ display:flex; }
+  .modal img{
+    max-width:96vw; max-height:96vh; object-fit:contain; display:block;
+    border-radius:10px; box-shadow: 0 10px 40px rgba(0,0,0,.5);
+    background:#fff; /* if the image has transparent edges */
+  }
+  .modal .close{
+    position:absolute; top:14px; right:16px;
+    background:#ffffffdd; color:#1a1a1a;
+    border:1px solid rgba(0,0,0,.2);
+    border-radius:999px; padding:6px 12px; font-weight:700; cursor:pointer;
+  }
+  @media (max-width:700px){
+  .site-logo img{
+    width:28vw;
+    max-width:96px;
+  }
+
+  /* extra breathing room below the logo */
+  .site-logo{
+    top:10px; /* can nudge down slightly if you like */
+    margin-bottom:12px; /* adds separation visually */
+  }
+
+  /* push content below logo */
+  .wrap{
+    /* top padding controls logo–content spacing */
+    padding: clamp(96px, 22vw, 140px) 10px 24px;
+  }
+}
+
 </style>
 </head>
 <body>
+
+<!-- Top-left logo -->
+<a class="site-logo" href="#" aria-label="Go to home" onclick="location.hash=''; show('home'); return false;">
+  <img src="logo.png" alt="MTL Practice logo">
+</a>
 
 <div class="wrap">
   <main class="container" id="bubble" data-view="home" aria-live="polite">
@@ -214,13 +281,13 @@
       </p>
     </section>
 
-     <!-- About / Sex Coaching -->
-     <section class="view" id="me">
-        <p class="lead">
-          Meet The Coach and learn more about the approach. I'm a licensed sex therapist and coach with a passion for helping people explore their sexuality and relationships.
-        </p>
-       
-      </section>
+    <!-- Meet the Coach -->
+    <section class="view" id="me">
+      <p class="lead">
+        Meet The Coach and learn more about the approach. I'm a licensed sex therapist and coach with
+        a passion for helping people explore their sexuality and relationships.
+      </p>
+    </section>
 
     <!-- Contact -->
     <section class="view" id="contact">
@@ -249,16 +316,22 @@
   <!-- Nav Buttons -->
   <nav class="actions" aria-label="Section navigation">
     <a data-nav="about" href="#about"  class="link-btn">What's Sex Coaching</a>
-    <a data-nav="me" href="#me"  class="link-btn">Meet The Coach</a>
+    <a data-nav="me"    href="#me"     class="link-btn">Meet The Coach</a>
     <a data-nav="book"  href="#book"   class="link-btn">Book Free Call</a>
     <a data-nav="contact" href="#contact" class="link-btn">Questions</a>
   </nav>
 
-  <!-- Badges -->
+  <!-- Certificates (bottom-left on desktop; in-flow on mobile) -->
   <div class="badge-stack">
-    <img src="sexcoachu.png"        alt="Certification" class="corner-badge" />
-    <img src="boardofsexology.png"  alt="Board of Sexology" class="corner-badge" />
+    <img src="sexcoachu.png"        alt="Certification — Sex Coach U" class="corner-badge cert-img" data-full="sexcoachu.png" />
+    <img src="boardofsexology.png"  alt="Certification — American Board of Sexology" class="corner-badge cert-img" data-full="boardofsexology.png" />
   </div>
+</div>
+
+<!-- Full-screen image modal -->
+<div class="modal" id="imgModal" aria-hidden="true" role="dialog" aria-label="Image viewer">
+  <button class="close" id="closeModal" aria-label="Close image">Close ✕</button>
+  <img id="modalImage" alt="">
 </div>
 
 <script>
@@ -287,7 +360,6 @@
   homeBtn.addEventListener('click', ()=>{
     location.hash = '';
     show('home');
-    // scroll to top on mobile just in case
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
@@ -297,6 +369,32 @@
   }
   window.addEventListener('hashchange', boot);
   boot();
+
+  /* ====== Modal for certificates ====== */
+  const modal = document.getElementById('imgModal');
+  const modalImg = document.getElementById('modalImage');
+  const closeModal = document.getElementById('closeModal');
+
+  // open on any certificate click
+  document.querySelectorAll('.cert-img').forEach(img=>{
+    img.addEventListener('click', ()=>{
+      const src = img.getAttribute('data-full') || img.src;
+      modalImg.src = src;
+      modalImg.alt = img.alt || 'Full-size image';
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden','false');
+    });
+  });
+
+  // close actions
+  function hideModal(){
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden','true');
+    modalImg.src = '';
+  }
+  closeModal.addEventListener('click', hideModal);
+  modal.addEventListener('click', (e)=>{ if(e.target === modal) hideModal(); });
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') hideModal(); });
 </script>
 
 </body>
