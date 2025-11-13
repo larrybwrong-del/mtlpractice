@@ -240,6 +240,36 @@
     padding: clamp(96px, 22vw, 140px) 10px 24px;
   }
 }
+/* Shared content width for wrap, bubble, and actions */
+.wrap{
+  /* min 320px, fluid 70vw, max 1280px (~50% of 2560) */
+  width: clamp(320px, 70vw, 1280px);
+  margin-inline: auto;
+}
+
+/* Keep the bubble full width of the wrap */
+.container{ width: 100%; }
+
+/* Make the button row use the same width + center it */
+.actions{
+  width: clamp(320px, 70vw, 1280px);
+  margin: 6px auto 0;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Fluid type that won’t get huge on desktops */
+h1{ font-size: clamp(28px, 4.2vw, 44px); }
+.tagline{ font-size: clamp(16px, 2.2vw, 22px); }
+.lead{ font-size: clamp(15px, 2vw, 18px); line-height: 1.55; }
+
+/* Tighter vertical padding on mobile */
+@media (max-width:700px){
+  .container{ padding: 14px 14px 18px; }
+  .actions{ margin-top: 4px; gap: 10px; }
+}
+
 
 </style>
 </head>
@@ -250,7 +280,16 @@
   <img src="logo.png" alt="MTL Practice logo">
 </a>
 
+
 <div class="wrap">
+      <!-- Nav Buttons -->
+  <nav class="actions" aria-label="Section navigation">
+    <a data-nav="about" href="#about"  class="link-btn">What's Sex Coaching</a>
+    <a data-nav="me"    href="#me"     class="link-btn">Meet The Coach</a>
+    <a data-nav="book"  href="#book"   class="link-btn">Book Free Call</a>
+    <a data-nav="contact" href="#contact" class="link-btn">Questions</a>
+  </nav>
+
   <main class="container" id="bubble" data-view="home" aria-live="polite">
     <div class="topbar">
       <button class="homebtn" id="homeBtn">← Home</button>
@@ -275,10 +314,10 @@
         communication, desire, boundaries, and embodied intimacy. Sessions are
         curious, collaborative, and paced to meet you where you are.
       </p>
-      <p class="note">
+      <!-- <p class="note">
         Want to ask something first?
         <a data-nav="contact" href="#contact" class="link-btn">Questions</a>
-      </p>
+      </p> -->
     </section>
 
     <!-- Meet the Coach -->
@@ -307,19 +346,11 @@
       <a class="btn" href="#" onclick="alert('Add scheduling link'); return false;">
         Book Free Call
       </a>
-      <p class="note">
+      <!-- <p class="note">
         Prefer email? <a data-nav="contact" href="#contact">Contact me</a>
-      </p>
+      </p> -->
     </section>
   </main>
-
-  <!-- Nav Buttons -->
-  <nav class="actions" aria-label="Section navigation">
-    <a data-nav="about" href="#about"  class="link-btn">What's Sex Coaching</a>
-    <a data-nav="me"    href="#me"     class="link-btn">Meet The Coach</a>
-    <a data-nav="book"  href="#book"   class="link-btn">Book Free Call</a>
-    <a data-nav="contact" href="#contact" class="link-btn">Questions</a>
-  </nav>
 
   <!-- Certificates (bottom-left on desktop; in-flow on mobile) -->
   <div class="badge-stack">
