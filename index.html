@@ -25,8 +25,9 @@
     background:url("backg.png") center/cover no-repeat;
     display:flex;                         /* center horizontally */
     justify-content:center;
-    align-items:center;                   /* desktop centered */
-    min-height:100vh;
+    align-items:center;
+    flex-direction: column;               /* Stack content vertically */
+    min-height:100vh;                     /* Ensure it covers the whole screen height */
   }
 
   /* MOBILE: content starts at top; avoid iOS fixed-bg jank */
@@ -177,22 +178,7 @@ color:#f1df97;
 
   .note{ font-size:14px; color:#3b4a3e; opacity:.9; margin-top:10px; }
 
-  /* Certificates
-     - mobile: in-flow at bottom-left
-     - desktop: fixed to viewport bottom-left
-  */
-  /* ===== Bottom-left badge bar + disclaimer ===== */
-  .badge-stack {
-  position: fixed;
-  left: 12px;
-  bottom: 12px;
-  z-index: 30;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 10px;
-  max-width: 90vw;
-}
+
 
 .corner-badge {
   width: 20vw;
@@ -320,28 +306,39 @@ h1{ font-size: clamp(30px, 4.1vw, 45px); }
   margin-bottom: 0.75rem; /* nice vertical spacing */
   line-height: 1.6;
 }
-/* Footer badges + disclaimer (bottom of page, not fixed) */
+/* Footer badges + disclaimer (bottom of page, not fixed) *//* New Full-Width Footer Container */
+.page-footer {
+    width: 100%;
+    background: #2a5656; /* Using the paper color for the full bar */
+    backdrop-filter: blur(10px);
+    box-shadow: 0 -4px 20px rgba(0,0,0,.08);
+    margin-top: 30px; /* Space above the footer */
+    z-index: 10;
+}
+
+/* Content wrapper inside the full bar */
 .footer-badges{
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 12px;
-  margin-top: 24px;
-  padding: 4px 4px 0;
-  box-sizing: border-box;
+    width: min(1400px, 94vw); /* Allows it to spread wider than the main bubble */
+    margin: 0 auto; /* Center the content */
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Center items vertically */
+    gap: 16px;
+    padding: 16px 20px; /* Vertical padding for the bar */
+    box-sizing: border-box;
 }
 
 .footer-left,
 .footer-right{
   display: flex;
-  align-items: flex-end;
-  gap: 8px;
+  align-items: center; /* Center items vertically */
+  gap: 10px;
+  flex-shrink: 0; /* Prevent badges from shrinking */
 }
 
 .footer-badge{
   width: 20vw;
-  max-width: 110px;
+  max-width: 100px;
   max-height:100px;
   height: auto;
   border-radius: 6px;
@@ -351,41 +348,40 @@ h1{ font-size: clamp(30px, 4.1vw, 45px); }
 }
 
 .footer-disclaimer{
-  flex: 1;
-  text-align: center;
-  font-size: 10px;
+  flex-grow: 1;
+  text-align: center; /* Center the text block itself */
+  font-size: 9.2px;
   line-height: 1.4;
-  color: #1b281d;
-  background:#eeeaea;
+  color: #f3f1ef;
+  /* Removed background and padding from the text block */
   max-width: 900px;
-  margin: 0 auto;
-  padding:8px;
-  border-radius:6px;
-  text-align:left;
+  margin: 0 10px; /* Small margin for separation from badges */
+  text-align: center; /* Text alignment within the block */
 }
 
-/* Mobile: stack badges, disclaimer below */
+/* Mobile: Stack layout for smaller screens */
 @media (max-width: 700px){
   .footer-badges{
     flex-direction: column;
     align-items: center;
-    gap: 6px;
-    margin-top: 18px;
+    gap: 12px; /* Increased vertical gap */
+    padding: 16px 12px 20px;
   }
 
   .footer-left,
   .footer-right{
     justify-content: center;
+    gap: 10px;
   }
 
   .footer-disclaimer{
     max-width: 100%;
-    padding: 0 12px;
+    margin-top: 10px;
   }
 
   .footer-badge{
-    width: 30vw;
-    max-width: 120px;
+    width: 25vw; /* Slightly larger on mobile */
+    max-width: 100px;
   }
 }
 
@@ -603,48 +599,46 @@ h1{ font-size: clamp(30px, 4.1vw, 45px); }
       </p> -->
     </section>
   </main>
-  <!-- Footer badges + disclaimer -->
-<div class="footer-badges">
-    <!-- Left: Safe Space badge -->
-    <div class="footer-left">
-      <img src="safespace.png"
-           alt="Safe Space"
-           class="footer-badge">
-    </div>
-  
-    <!-- Middle: disclaimer text (edit copy as you like) -->
-    <p class="footer-disclaimer">
-        <b>Disclaimer:</b> Coaching is for education and personal development only and is not medical, psychological, or legal advice. Results are not guaranteed. No explicit content, nudity, or sexual activity occurs in any session.
-        <br><b>Terms & Conditions:</b> By using this site or booking services, you confirm you are 18+ and responsible for your own decisions. Services are provided “as is,” and the coach is not liable for how information is used.
-        <br><b>Privacy:</b> Basic personal information may be collected for scheduling and communication only and is not sold or shared except as required by law. Reasonable measures are used to protect your data.
-        
-    </p>
-  
-    <!-- Right: certification badges -->
-    <div class="footer-right">
-      <!-- Sex Coach U (keeps modal behavior) -->
-      <a href="#" class="badge-link" onclick="return false;">
-        <img src="sexcoachu.png"
-             alt="Certification — Sex Coach U"
-             class="footer-badge cert-img"
-             data-full="sexcoachu.png" />
-      </a>
-  
-      <!-- American Board of Sexology (external link) -->
-      <a href="https://americanboardofsexology.org/sexologist/paula-perez-costas/"
-         target="_blank"
-         rel="noopener noreferrer"
-         class="badge-link">
-        <img src="boardofsexology.png"
-             alt="Certification — American Board of Sexology"
-             class="footer-badge" />
-      </a>
-    </div>
-  </div>
   
   
 </div>
+<footer class="page-footer">
+    <div class="footer-badges">
+      <div class="footer-left"> <a href="https://safespacealliance.com"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="badge-link">
+        <img src="safespace.png"
+             alt="Safe Space"
+             class="footer-badge"></a>
+      </div>
 
+      <p class="footer-disclaimer">
+          <b>Disclaimer:</b> Coaching is for education and personal development only and is not medical, psychological, or legal advice. Results are not guaranteed. No explicit content, nudity, or sexual activity occurs in any session.
+          <br><b>Terms & Conditions:</b> By using this site or booking services, you confirm you are 18+ and responsible for your own decisions. Services are provided “as is,” and the coach is not liable for how information is used.
+          <br><b>Privacy:</b> Basic personal information may be collected for scheduling and communication only and is not sold or shared except as required by law. Reasonable measures are used to protect your data.
+      </p>
+
+      <div class="footer-right">
+        <a href="#" class="badge-link" onclick="return false;">
+          <img src="sexcoachu.png"
+               alt="Certification — Sex Coach U"
+               class="footer-badge cert-img"
+               data-full="sexcoachu.png" />
+        </a>
+
+        <a href="https://americanboardofsexology.org/sexologist/paula-perez-costas/"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="badge-link">
+          <img src="boardofsexology.png"
+               alt="Certification — American Board of Sexology"
+               class="footer-badge" />
+        </a>
+      </div>
+    </div>
+  </footer>
+  </div>
 <!-- Full-screen image modal -->
 <div class="modal" id="imgModal" aria-hidden="true" role="dialog" aria-label="Image viewer">
   <button class="close" id="closeModal" aria-label="Close image">Close ✕</button>
