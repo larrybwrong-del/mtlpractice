@@ -181,32 +181,60 @@ color:#f1df97;
      - mobile: in-flow at bottom-left
      - desktop: fixed to viewport bottom-left
   */
-  .badge-stack{
-    width:100%;
-    display:flex; justify-content:flex-start; align-items:flex-end;
-    gap:12px;
-    margin-top:4px;
-    position:static;     /* mobile default = in flow */
-    left:auto; bottom:auto;
-    z-index:20;
-  }
-  
-  .corner-badge{
-    width:20vw; max-width:100px; height:auto; opacity:.95;
-    filter: drop-shadow(0 4px 10px rgba(0,0,0,.2));
-    cursor:pointer;  /* pointer on hover */
-    border-radius:6px;
-  }
-  @media (min-width:901px){
-    .badge-stack{
-    position:fixed; right:20px; bottom:20px; width:auto; gap:12px;
-  }
-    .corner-badge{ width:12vw; max-width:100px; }
-  }
-  @media (max-width:600px){
-    .corner-badge{ width:30vw; max-width:120px; }
-  }
+  /* ===== Bottom-left badge bar + disclaimer ===== */
+  .badge-stack {
+  position: fixed;
+  left: 12px;
+  bottom: 12px;
+  z-index: 30;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+  max-width: 90vw;
+}
 
+.corner-badge {
+  width: 20vw;
+  max-width: 100px;
+  height: auto;
+  border-radius: 6px;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,.2));
+  opacity: .95;
+  cursor: pointer;
+}
+
+/* Desktop: disclaimer between badges */
+@media (min-width: 900px){
+  .badge-stack {
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+  .badge-disclaimer {
+    order: 1;
+    margin: 0 6px;
+    max-width: 220px;
+    font-size: 10px;
+    line-height: 1.3;
+    color: #1b281d;
+  }
+}
+
+/* Mobile: disclaimer below badges */
+@media (max-width: 899px){
+  .badge-disclaimer {
+    order: 99;
+    width: 100%;
+    margin-top: 4px;
+    font-size: 10px;
+    line-height: 1.3;
+    color: #1b281d;
+  }
+  .corner-badge {
+    width: 30vw;
+    max-width: 120px;
+  }
+}
 
   /* Image modal for full-screen certificate view */
   .modal{
@@ -267,7 +295,7 @@ color:#f1df97;
 /* Fluid type that won’t get huge on desktops */
 h1{ font-size: clamp(30px, 4.1vw, 45px); }
 .tagline{ font-size: clamp(19px, 2.4vw, 25px); }
-.lead{ font-size: clamp(22px, 2.4vw, 24px); line-height: 1.6; }
+.lead{ font-size: clamp(17px, 2vw, 20px); line-height: 1.6; }
 
 /* Tighter vertical padding on mobile */
 @media (max-width:700px){
@@ -275,7 +303,7 @@ h1{ font-size: clamp(30px, 4.1vw, 45px); }
   .actions{ margin-top: 4px; gap: 10px; }
 }
 .centered-list {
-  font-size: clamp(18px, 2.2vw, 20px); line-height: 1.6; 
+  font-size: clamp(17px, 2vw, 20px); line-height: 1.6; 
   max-width: 80%;      /* controls width */
   margin: 0 auto 2rem;   /* centers the block + spacing below */
   padding: 0 1rem;       /* small horizontal padding */
@@ -291,6 +319,74 @@ h1{ font-size: clamp(30px, 4.1vw, 45px); }
 .centered-list li {
   margin-bottom: 0.75rem; /* nice vertical spacing */
   line-height: 1.6;
+}
+/* Footer badges + disclaimer (bottom of page, not fixed) */
+.footer-badges{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+  padding: 4px 4px 0;
+  box-sizing: border-box;
+}
+
+.footer-left,
+.footer-right{
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.footer-badge{
+  width: 20vw;
+  max-width: 110px;
+  max-height:100px;
+  height: auto;
+  border-radius: 6px;
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,.2));
+  opacity: .95;
+  cursor: pointer;
+}
+
+.footer-disclaimer{
+  flex: 1;
+  text-align: center;
+  font-size: 10px;
+  line-height: 1.4;
+  color: #1b281d;
+  background:#eeeaea;
+  max-width: 900px;
+  margin: 0 auto;
+  padding:8px;
+  border-radius:6px;
+  text-align:left;
+}
+
+/* Mobile: stack badges, disclaimer below */
+@media (max-width: 700px){
+  .footer-badges{
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-top: 18px;
+  }
+
+  .footer-left,
+  .footer-right{
+    justify-content: center;
+  }
+
+  .footer-disclaimer{
+    max-width: 100%;
+    padding: 0 12px;
+  }
+
+  .footer-badge{
+    width: 30vw;
+    max-width: 120px;
+  }
 }
 
 
@@ -310,7 +406,7 @@ h1{ font-size: clamp(30px, 4.1vw, 45px); }
     <a data-nav="book"  href="#book"   class="link-btn">Book <span class="link-btn-free">FREE</span> Call</a>
     <a data-nav="me"    href="#me"     class="link-btn">Meet The Coach</a>
     <a data-nav="about" href="#about"  class="link-btn">What's Sex Coaching</a>
-    <a data-nav="contact" href="#contact" class="link-btn">Questions</a>
+    <a data-nav="contact" href="#contact" class="link-btn">Contact Me</a>
   </nav>
 
   <main class="container" id="bubble" data-view="home" aria-live="polite">
@@ -507,27 +603,45 @@ h1{ font-size: clamp(30px, 4.1vw, 45px); }
       </p> -->
     </section>
   </main>
-  <div class="badge-stack">
-
-    <!-- Sex Coach U (keeps modal) -->
-    <a href="#" class="badge-link" onclick="return false;">
-      <img src="sexcoachu.png"
-        alt="Certification — Sex Coach U"
-        class="corner-badge cert-img"
-        data-full="sexcoachu.png" />
-    </a>
+  <!-- Footer badges + disclaimer -->
+<div class="footer-badges">
+    <!-- Left: Safe Space badge -->
+    <div class="footer-left">
+      <img src="safespace.png"
+           alt="Safe Space"
+           class="footer-badge">
+    </div>
   
-    <!-- American Board of Sexology (opens link) -->
-    <a href="https://americanboardofsexology.org/sexologist/paula-perez-costas/"
-       target="_blank"
-       rel="noopener noreferrer"
-       class="badge-link">
-      <img src="boardofsexology.png"
-        alt="Certification — American Board of Sexology"
-        class="corner-badge" />
-    </a>
+    <!-- Middle: disclaimer text (edit copy as you like) -->
+    <p class="footer-disclaimer">
+        <b>Disclaimer:</b> Coaching is for education and personal development only and is not medical, psychological, or legal advice. Results are not guaranteed. No explicit content, nudity, or sexual activity occurs in any session.
+        <br><b>Terms & Conditions:</b> By using this site or booking services, you confirm you are 18+ and responsible for your own decisions. Services are provided “as is,” and the coach is not liable for how information is used.
+        <br><b>Privacy:</b> Basic personal information may be collected for scheduling and communication only and is not sold or shared except as required by law. Reasonable measures are used to protect your data.
+        
+    </p>
   
+    <!-- Right: certification badges -->
+    <div class="footer-right">
+      <!-- Sex Coach U (keeps modal behavior) -->
+      <a href="#" class="badge-link" onclick="return false;">
+        <img src="sexcoachu.png"
+             alt="Certification — Sex Coach U"
+             class="footer-badge cert-img"
+             data-full="sexcoachu.png" />
+      </a>
+  
+      <!-- American Board of Sexology (external link) -->
+      <a href="https://americanboardofsexology.org/sexologist/paula-perez-costas/"
+         target="_blank"
+         rel="noopener noreferrer"
+         class="badge-link">
+        <img src="boardofsexology.png"
+             alt="Certification — American Board of Sexology"
+             class="footer-badge" />
+      </a>
+    </div>
   </div>
+  
   
 </div>
 
