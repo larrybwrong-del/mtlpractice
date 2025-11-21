@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>MTL Practice</title>
 
-<style>
-  :root{
+<style>:root{
     --ink:#142b19;
     --ink-2:#35523a;
     --paper:rgba(250,245,235,.58);
@@ -15,33 +14,45 @@
     --btn-hover:#4b7056;
     --radius:18px;
   }
-
+  
   /* base */
-  html { min-height:100%}
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
+  
   body{
-    margin:0;
+    display:flex;
+    flex-direction:column;   /* vertical stack: logo, wrap, footer */
     font-family: Inter,Helvetica;
     color:var(--ink);
     background:url("backg.png") center/cover no-repeat;
-    display:flex;                         /* center horizontally */
-    justify-content:center;
+  }
+  
+  /* make main content fill remaining height */
+  .wrap {
+    flex: 1;
+    width:min(780px,94vw);
+    display:flex;
+    flex-direction:column;
+    gap:16px;
     align-items:center;
-    flex-direction: column;               /* Stack content vertically */
-    min-height:100vh;                     /* Ensure it covers the whole screen height */
+    padding:10px;
+    box-sizing:border-box;
+    position:relative;
   }
+  
 
-  /* MOBILE: content starts at top; avoid iOS fixed-bg jank */
   @media (max-width:700px){
-    body{
-      align-items:flex-start;
-      padding:16px 0 24px;
-      background-attachment:scroll;
-    }
+  body{
+    padding:16px 0 24px;
+    background-attachment:scroll;
   }
-  /* DESKTOP: fixed background */
-  @media (min-width:701px){
-    body{ background-attachment:fixed; }
-  }
+}
+
+@media (min-width:701px){
+  body{ background-attachment:fixed; }
+}
 
   /* Top-left logo (site-wide) */
   .site-logo{
@@ -589,7 +600,7 @@ h1{ font-size: clamp(30px, 4.1vw, 45px); }
     <!-- Book -->
     <section class="view" id="book">
       <p class="lead">
-        Book a free 20-minute call to ask questions and explore working together.
+        This 20-minute free call is for new clients. Let’s connect to see how we can collaborate to support your journey!
       </p>
       <a class="btn" href="https://cal.com/mtlpractice/20min" target="_blank">
         Book Free Call
