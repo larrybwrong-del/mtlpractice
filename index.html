@@ -523,6 +523,44 @@ audio::-webkit-media-controls-enclosure {
   border: none !important;
 }
 
+
+/* ==== CONTACT FORM CLEANUP (desktop + mobile) ==== */
+
+/* Slightly inset + centered form inside the bubble */
+#contact form{
+  display: grid;
+  gap: 12px;
+  margin: 12px auto 0;
+  width: 100%;
+  max-width: 720px;          /* narrower than full bubble on desktop */
+}
+
+/* Make fields look like clean rounded bubbles */
+#contact input,
+#contact textarea{
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 14px 16px;
+  border-radius: var(--radius);      /* match your global radius */
+  border: 1px solid rgba(60,50,30,.28);
+  background: rgba(255,255,255,.96);
+  font: inherit;
+}
+
+/* Textarea height + mobile tweaks */
+#contact textarea{
+  min-height: 130px;
+  resize: vertical;
+}
+
+@media (max-width:700px){
+  #contact form{
+    max-width: 100%;
+    padding: 0 4px;          /* tiny side inset so edges don’t feel “flush” */
+  }
+}
+
 </style>
 </head>
 <body>
@@ -559,14 +597,15 @@ audio::-webkit-media-controls-enclosure {
     <!-- Home -->
     <section class="view active" id="home">
       <p class="lead">
-        Welcome to the Multiple Truths Land Practice!
-      </p>
+Welcome! A message from Coach Pau
 
   <!-- Audio welcome message -->
   <audio class="welcome-audio" controls preload="none">
     <source src="welcomeaudio.m4a" type="audio/mp4" />
     Your browser does not support the audio element.
   </audio>
+</p>
+
       <p class="lead">
         I am deeply grateful that you are taking the time, energy, and resources to engage in this work. As your coach, my role is to remind you to be human, to allow, acknowledge, and celebrate your own humanity, and to see, allow, acknowledge, and celebrate the humanity in others. I will be doing that by supporting your sexual wellbeing, self-knowledge, and liberation, honoring your autonomy and lived experiences.
       </p>
