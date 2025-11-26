@@ -21,18 +21,86 @@
     margin: 0;
   }
   
+  /* shared body layout */
   body{
+    position:relative;           /* so ::before can sit behind */
     display:flex;
-    flex-direction:column;   /* vertical stack: logo, wrap, footer */
+    flex-direction:column;
     font-family: Inter,Helvetica;
     color:var(--ink);
-    background:url("backg.png") center/cover no-repeat;
   }
   
-  /* make main content fill remaining height */
-  .wrap {
-    flex: 1;
-    width:min(780px,94vw);
+  /* ---------- MOBILE BACKGROUND (gradient layer) ---------- */
+  @media (max-width:700px){
+    body{
+      background:#eaf3ee;        /* soft fallback edge color */
+      padding:16px 0 24px;
+      overflow-x:hidden;
+    }
+  
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:-1;
+      /* one continuous sky → trees gradient */
+      background:linear-gradient(
+        to bottom,
+        #ddeef6 0%,    /* light sky */
+        #c6dcea 30%,   /* softer sky */
+        #9abacc 55%,   /* your base color */
+        #6f927a 82%,   /* trees */
+        #3f654c 100%   /* deeper trees */
+      );
+    }
+  }
+  
+  /* ---------- DESKTOP BACKGROUND (photo hero) ---------- */
+  @media (min-width:701px){
+    body{
+      background-color:#eaf3ee; /* fallback if image fails */
+      background-image:url("backg.png");
+      background-position:center top;
+      background-size:cover;
+      background-repeat:no-repeat;
+      background-attachment:fixed;
+    }
+  
+    body::before{
+      content:none;  /* no gradient layer on desktop */
+    }
+  }
+  
+  /* Top-left logo (site-wide) */
+  .site-logo{
+    position:fixed;
+    top:12px;
+    left:12px;
+    z-index:30;
+  }
+  .site-logo img{
+    display:block;
+    width:20vw;
+    max-width:140px;
+    height:auto;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,.22));
+    border-radius:0;
+    background:transparent;
+  }
+  
+  /* Mobile: smaller logo, still fixed */
+  @media (max-width:700px){
+    .site-logo img{
+      width:28vw;
+      max-width:96px;
+    }
+  }
+  
+  /* Page wrapper */
+  .wrap{
+    width: clamp(320px, 70vw, 1280px);
+    margin-inline:auto;
+    flex:1;
     display:flex;
     flex-direction:column;
     gap:16px;
@@ -43,36 +111,10 @@
   }
   
 
-  @media (max-width:700px){
-  body{
-    padding:16px 0 24px;
-    background-attachment:scroll;
-  }
-}
 
-@media (min-width:701px){
-  body{ background-attachment:fixed; }
-}
 
-  /* Top-left logo (site-wide) */
-  .site-logo{
-    position:fixed;
-    top:14px; left:14px;
-    z-index:30;
-  }
-  .site-logo img{
-    display:block;
-    width:20vw;
-    max-width:140px;
-    height:auto;
-    filter: drop-shadow(0 4px 12px rgba(0,0,0,.22));
-    border-radius:0; /* keep logo edges exact */
-    background:transparent; /* ensure no background fill */
-}
 
-  @media (max-width:700px){
-    .site-logo img{ width:32vw; max-width:120px; }
-  }
+
 
   /* Page wrapper */
   .wrap{
@@ -105,7 +147,7 @@
   }
   .homebtn{
     display:none;                 /* hidden on home */
-background: transparent;
+    background: transparent;
     border:1px solid var(--line);
     color:var(--ink);
     border-radius:999px;
@@ -167,9 +209,9 @@ background: transparent;
   .link-btn:hover{ transform:translateY(-1px); box-shadow:0 6px 16px rgba(0,0,0,.12); }
 
   .link-btn-free{
-color:#f1df97;
+    color:#f1df97;
+  }
 
-}
   form{ display:grid; gap:12px; margin-top:8px; }
   input,textarea{
     width:100%; padding:12px; border-radius:10px;
@@ -189,49 +231,47 @@ color:#f1df97;
 
   .note{ font-size:14px; color:#3b4a3e; opacity:.9; margin-top:10px; }
 
-
-
-.corner-badge {
-  width: 20vw;
-  max-width: 100px;
-  height: auto;
-  border-radius: 6px;
-  filter: drop-shadow(0 4px 10px rgba(0,0,0,.2));
-  opacity: .95;
-  cursor: pointer;
-}
-
-/* Desktop: disclaimer between badges */
-@media (min-width: 900px){
-  .badge-stack {
-    flex-wrap: nowrap;
-    align-items: center;
-  }
-  .badge-disclaimer {
-    order: 1;
-    margin: 0 6px;
-    max-width: 220px;
-    font-size: 10px;
-    line-height: 1.3;
-    color: #1b281d;
-  }
-}
-
-/* Mobile: disclaimer below badges */
-@media (max-width: 899px){
-  .badge-disclaimer {
-    order: 99;
-    width: 100%;
-    margin-top: 4px;
-    font-size: 10px;
-    line-height: 1.3;
-    color: #1b281d;
-  }
   .corner-badge {
-    width: 30vw;
-    max-width: 120px;
+    width: 20vw;
+    max-width: 100px;
+    height: auto;
+    border-radius: 6px;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,.2));
+    opacity: .95;
+    cursor: pointer;
   }
-}
+
+  /* Desktop: disclaimer between badges */
+  @media (min-width: 900px){
+    .badge-stack {
+      flex-wrap: nowrap;
+      align-items: center;
+    }
+    .badge-disclaimer {
+      order: 1;
+      margin: 0 6px;
+      max-width: 220px;
+      font-size: 10px;
+      line-height: 1.3;
+      color: #1b281d;
+    }
+  }
+
+  /* Mobile: disclaimer below badges */
+  @media (max-width: 899px){
+    .badge-disclaimer {
+      order: 99;
+      width: 100%;
+      margin-top: 4px;
+      font-size: 10px;
+      line-height: 1.3;
+      color: #1b281d;
+    }
+    .corner-badge {
+      width: 30vw;
+      max-width: 120px;
+    }
+  }
 
   /* Image modal for full-screen certificate view */
   .modal{
@@ -252,150 +292,234 @@ color:#f1df97;
     border:1px solid rgba(0,0,0,.2);
     border-radius:999px; padding:6px 12px; font-weight:700; cursor:pointer;
   }
-  @media (max-width:700px){
+
+/* Top-left logo (site-wide) */
+.site-logo{
+  position:fixed;
+  top:12px;
+  left:12px;
+  z-index:30;
+}
+.site-logo img{
+  display:block;
+  width:20vw;
+  max-width:140px;
+  height:auto;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,.22));
+  border-radius:0;
+  background:transparent;
+}
+
+/* Mobile: force fixed positioning + smaller image */
+@media (max-width:700px){
+  .site-logo{
+    position:fixed !important;
+    top:12px !important;
+    left:12px !important;
+  }
   .site-logo img{
     width:28vw;
     max-width:96px;
   }
+}
 
-  /* extra breathing room below the logo */
-  .site-logo{
-    top:10px; /* can nudge down slightly if you like */
-    margin-bottom:12px; /* adds separation visually */
-  }
 
-  /* push content below logo */
+  /* Shared content width for wrap, bubble, and actions */
   .wrap{
-    /* top padding controls logo–content spacing */
-    padding: clamp(96px, 22vw, 140px) 10px 24px;
+    width: clamp(320px, 70vw, 1280px);
+    margin-inline: auto;
   }
-}
-/* Shared content width for wrap, bubble, and actions */
-.wrap{
-  /* min 320px, fluid 70vw, max 1280px (~50% of 2560) */
-  width: clamp(320px, 70vw, 1280px);
-  margin-inline: auto;
-}
 
-/* Keep the bubble full width of the wrap */
-.container{ width: 100%; }
+  .container{ width: 100%; }
 
-/* Make the button row use the same width + center it */
-.actions{
-  width: clamp(320px, 70vw, 1280px);
-  margin: 6px auto 0;
-  justify-content: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
+  .actions{
+    width: clamp(320px, 70vw, 1280px);
+    margin: 6px auto 0;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
 
-/* Fluid type that won’t get huge on desktops */
-h1{ font-size: clamp(30px, 4.1vw, 45px); }
-.tagline{ font-size: clamp(19px, 2.4vw, 25px); }
-.lead{ font-size: clamp(17px, 2vw, 20px); line-height: 1.4; }
+  h1{ font-size: clamp(30px, 4.1vw, 45px); }
+  .tagline{ font-size: clamp(19px, 2.4vw, 25px); }
+  .lead{ font-size: clamp(17px, 2vw, 20px); line-height: 1.4; }
 
-/* Tighter vertical padding on mobile */
-@media (max-width:700px){
-  .container{ padding: 14px 14px 18px; }
-  .actions{ margin-top: 4px; gap: 10px; }
-}
-.centered-list {
-  font-size: clamp(17px, 2vw, 20px); line-height: 1.2; 
-  max-width: 80%;      /* controls width */
-  margin: 0 auto 2rem;   /* centers the block + spacing below */
-  padding: 0 1rem;       /* small horizontal padding */
-  text-align: left;      /* keeps bullets left-aligned */
-  color:#1b281d
-}
+  @media (max-width:700px){
+    .container{ padding: 14px 14px 18px; }
+    .actions{ margin-top: 4px; gap: 10px; }
+  }
 
-.centered-list ul {
-  padding-left: 1.3rem;  /* proper bullet indent */
-  margin: 1rem 0;        /* space around the list */
-}
+  .centered-list {
+    font-size: clamp(17px, 2vw, 20px); line-height: 1.2; 
+    max-width: 80%;
+    margin: 0 auto 2rem;
+    padding: 0 1rem;
+    text-align: left;
+    color:#1b281d
+  }
 
-.centered-list li {
-  margin-bottom: 0.75rem; /* nice vertical spacing */
-  line-height: 1.2;
-}
-/* Footer badges + disclaimer (bottom of page, not fixed) *//* New Full-Width Footer Container */
-.page-footer {
+  .centered-list ul {
+    padding-left: 1.3rem;
+    margin: 1rem 0;
+  }
+
+  .centered-list li {
+    margin-bottom: 0.75rem;
+    line-height: 1.2;
+  }
+
+  /* New Full-Width Footer Container */
+  .page-footer {
     width: 100%;
-    background: #2a5656; /* Using the paper color for the full bar */
+    background: #2a5656;
     backdrop-filter: blur(10px);
     box-shadow: 0 -4px 20px rgba(0,0,0,.08);
-    margin-top: 30px; /* Space above the footer */
+    margin-top: 30px;
     z-index: 10;
-}
+  }
 
-/* Content wrapper inside the full bar */
-.footer-badges{
-    width: min(1400px, 94vw); /* Allows it to spread wider than the main bubble */
-    margin: 0 auto; /* Center the content */
+  .footer-badges{
+    width: min(1400px, 94vw);
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Center items vertically */
-    gap: 16px;
-    padding: 16px 20px; /* Vertical padding for the bar */
-    box-sizing: border-box;
-}
-
-.footer-left,
-.footer-right{
-  display: flex;
-  align-items: center; /* Center items vertically */
-  gap: 10px;
-  flex-shrink: 0; /* Prevent badges from shrinking */
-}
-
-.footer-badge{
-  width: 20vw;
-  max-width: 100px;
-  max-height:100px;
-  height: auto;
-  border-radius: 6px;
-  filter: drop-shadow(0 4px 10px rgba(0,0,0,.2));
-  opacity: .95;
-  cursor: pointer;
-}
-
-.footer-disclaimer{
-  flex-grow: 1;
-  text-align: center; /* Center the text block itself */
-  font-size: 9.2px;
-  line-height: 1.4;
-  color: #f3f1ef;
-  /* Removed background and padding from the text block */
-  max-width: 900px;
-  margin: 0 10px; /* Small margin for separation from badges */
-  text-align: center; /* Text alignment within the block */
-}
-
-/* Mobile: Stack layout for smaller screens */
-@media (max-width: 700px){
-  .footer-badges{
-    flex-direction: column;
     align-items: center;
-    gap: 12px; /* Increased vertical gap */
-    padding: 16px 12px 20px;
+    gap: 16px;
+    padding: 16px 20px;
+    box-sizing: border-box;
   }
 
   .footer-left,
   .footer-right{
-    justify-content: center;
+    display: flex;
+    align-items: center;
     gap: 10px;
-  }
-
-  .footer-disclaimer{
-    max-width: 100%;
-    margin-top: 10px;
+    flex-shrink: 0;
   }
 
   .footer-badge{
-    width: 25vw; /* Slightly larger on mobile */
+    width: 20vw;
     max-width: 100px;
+    max-height:100px;
+    height: auto;
+    border-radius: 6px;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,.2));
+    opacity: .95;
+    cursor: pointer;
+  }
+
+  .footer-disclaimer{
+    flex-grow: 1;
+    text-align: center;
+    font-size: 9.2px;
+    line-height: 1.4;
+    color: #f3f1ef;
+    max-width: 900px;
+    margin: 0 10px;
+  }
+
+  @media (max-width: 700px){
+    .footer-badges{
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 12px 20px;
+    }
+
+    .footer-left,
+    .footer-right{
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .footer-disclaimer{
+      max-width: 100%;
+      margin-top: 10px;
+    }
+
+    .footer-badge{
+      width: 25vw;
+      max-width: 100px;
+    }
+  }
+  /* Default: no bottom nav on desktop, full top row */
+.actions-bottom{
+  display:none;
+}
+
+/* Mobile layout: 
+   - top nav shows ONLY Book button
+   - bottom nav shows the other buttons under the content
+*/
+@media (max-width:700px){
+  .actions-top [data-nav]:not([data-nav="book"]) {
+    display:none;
+  }
+
+  .actions-bottom{
+    display:flex;
   }
 }
 
+/* Hidden by default (desktop) */
+.mobile-book-btn{
+  display:none;
+}
+
+/* Mobile layout tweaks */
+@media (max-width:700px){
+  /* Show mobile Book button, centered under logo */
+  .mobile-book-btn{
+    display:inline-flex;
+    margin: 70px auto 10px;  /* space below fixed logo */
+    justify-content:center;
+    margin-top:20px;
+    margin-left:120px;
+    /* margin-top:-2px; */
+  }
+
+  /* Hide the entire top nav on mobile; we'll use bottom nav + mobile button */
+  .actions-top{
+    display:none;
+  }
+
+  /* Bottom nav (Meet / What's / Contact) shows under content */
+  .actions-bottom{
+    display:flex;
+  }
+
+  /* Bring the main content higher now that the Book button is outside .wrap */
+  .wrap{
+    padding: 16px 10px 24px;
+  }
+}
+.welcome-audio {
+  display: block;
+  margin: 0 auto 18px;
+  width: 100%;
+  max-width: 320px;
+
+  /* remove default box */
+  background: transparent !important;
+  border: none !important;
+
+  /* remove Safari/iOS padding around controls */
+  padding: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+audio::-webkit-media-controls-panel {
+  background-color: transparent !important;
+}
+
+audio::-webkit-media-controls {
+  background-color: transparent !important;
+}
+
+audio::-webkit-media-controls-enclosure {
+  background-color: transparent !important;
+  border: none !important;
+}
 
 </style>
 </head>
@@ -406,15 +530,21 @@ h1{ font-size: clamp(30px, 4.1vw, 45px); }
   <img src="logo.png" alt="MTL Practice logo">
 </a>
 
+<!-- Mobile Book button (centered under logo) -->
+<a class="mobile-book-btn link-btn" data-nav="book" href="#book">
+    Book <span class="link-btn-free">FREE</span> Call
+  </a>
 
 <div class="wrap">
-      <!-- Nav Buttons -->
-  <nav class="actions" aria-label="Section navigation">
+  <!-- Nav Buttons -->
+   <!-- Top Nav Buttons (always visible, but trimmed on mobile) -->
+   <nav class="actions actions-top" aria-label="Section navigation">
     <a data-nav="book"  href="#book"   class="link-btn">Book <span class="link-btn-free">FREE</span> Call</a>
     <a data-nav="me"    href="#me"     class="link-btn">Meet The Coach</a>
     <a data-nav="about" href="#about"  class="link-btn">What's Sex Coaching</a>
     <a data-nav="contact" href="#contact" class="link-btn">Contact Me</a>
   </nav>
+
 
   <main class="container" id="bubble" data-view="home" aria-live="polite">
     <div class="topbar">
@@ -426,214 +556,258 @@ h1{ font-size: clamp(30px, 4.1vw, 45px); }
 
     <!-- Home -->
     <section class="view active" id="home">
-        <p class="lead">
-            Welcome to the Multiple Truths Land Practice!   </p>
-            <p class="lead">
+      <p class="lead">
+        Welcome to the Multiple Truths Land Practice!
+      </p>
 
-            I am deeply grateful that you are taking the time, energy, and resources to engage in this work. As your coach, my role is to remind you to be human, to allow, acknowledge, and celebrate your own humanity, and to see, allow, acknowledge, and celebrate the humanity in others. I will be doing that by supporting your sexual wellbeing, self-knowledge, and liberation, honoring your autonomy and lived experiences.
-        </p><p class="lead">
-
-            My practice is rooted in:
-          </p>
-          
-          <div class="centered-list">
-            <ul>
-              <li>interdependency</li>
-              <li>uncolonization (as a settler that I am)</li>
-              <li>continuity and expansion versus binarism</li>
-              <li>anti-oppression, and the abolition of all systems that constrain pleasure, desire, self-expression, and overall liberation of all beings</li>
-              <li>
-                the multiple truths theory. Truth is multidimensional and exists in the honesty of looking at all sides. That’s why a single reality can be understood in different, and sometimes conflicting ways, depending on perspective and/or context, and diverse interpretations can all hold validity simultaneously.
-              </li>
-            </ul>
-          </div>
-          
-          <p class="lead">
-            My work is not neutral. It is a refusal to replicate systems of control and non-consensual violence under the guise of professionalism. I hold this space with care, respect, shared responsibility, and shared power, as a site of healing, education, pleasure, and resistance. Liberation is the ultimate goal.
-          </p>
-          
-          
+  <!-- Audio welcome message -->
+  <audio class="welcome-audio" controls preload="none">
+    <source src="welcomeaudio.m4a" type="audio/mp4" />
+    Your browser does not support the audio element.
+  </audio>
+      <p class="lead">
+        I am deeply grateful that you are taking the time, energy, and resources to engage in this work. As your coach, my role is to remind you to be human, to allow, acknowledge, and celebrate your own humanity, and to see, allow, acknowledge, and celebrate the humanity in others. I will be doing that by supporting your sexual wellbeing, self-knowledge, and liberation, honoring your autonomy and lived experiences.
+      </p>
+      <p class="lead">
+        My practice is rooted in:
+      </p>
+      <div class="centered-list">
+        <ul>
+          <li>interdependency</li>
+          <li>uncolonization (as a settler that I am)</li>
+          <li>continuity and expansion versus binarism</li>
+          <li>anti-oppression, and the abolition of all systems that constrain pleasure, desire, self-expression, and overall liberation of all beings</li>
+          <li>
+            the multiple truths theory. Truth is multidimensional and exists in the honesty of looking at all sides. That’s why a single reality can be understood in different, and sometimes conflicting ways, depending on perspective and/or context, and diverse interpretations can all hold validity simultaneously.
+          </li>
+        </ul>
+      </div>
+      <p class="lead">
+        My work is not neutral. It is a refusal to replicate systems of control and non-consensual violence under the guise of professionalism. I hold this space with care, respect, shared responsibility, and shared power, as a site of healing, education, pleasure, and resistance. Liberation is the ultimate goal.
+      </p>
     </section>
 
     <!-- About / Sex Coaching -->
     <section class="view" id="about">
-        <p class="lead">
-            <strong>What is Sex or Sexistential Coaching?</strong>
-          </p>
-          
-          <p class="lead">
-            Sexistential coaching, also called Sex, Intimacy & Relationship Coaching, focuses on sexuality and supports our human experience. PAUSE! Let me clarify one really important thing: sexuality is deeper than sex. Go ahead and read that again please, take a deep breath, and carry on.
-          </p>
-          
-          <p class="lead">
-            We live in a strangely ironic society: a hypersexualized culture that sends us the message that we should all be having amazing, and endless sex; yet simultaneously treats sex and sexuality as taboo, shameful, or improper to speak about, and cancels the nature of humanity—therefore sexuality: expansiveness. I’m talking about the full continuity of sexuality and sex, from and to passing through everything in between and all the combinations!
-          </p>
-          
-          <p class="lead">
-            In reality, we are sexual beings from birth to death, not because we’re meant to be sexualized at all times, but because we’re wired for connection, pleasure, and embodiment. No one is owed another person, but everyone is entitled to their own desire, their own pleasure, and their own consensual self-expression. These impulses aren’t problems to hide or distrust; they’re parts of being human. When we bring the “forbidden” into the light, especially in a society that’s both obsessed with sex and terrified of talking about it, we liberate us All: we make space for authenticity, “safety”/healing*, and the ability to shine, reducing harm.
-          </p>
-          
-          <p class="lead">
-            During our sessions we lean into curiosity, and commit to an honest and authentic collaboration at your pace.
-          </p>
-          
-          <p class="lead">
-            Sex Coaching is a guided process to:
-          </p>
-          
-          <div class="centered-list">
-            <ul>
-              <li>Experience a healing-oriented, open, non-judgmental space to explore your sexual self.</li>
-              <li>Access accurate, personalized information about sex and sexuality.</li>
-              <li>Learn techniques and strategies to expand pleasure (mentally and physically) and connection with yourself and others.</li>
-              <li>Practice tuning into your whole self: mind, body, emotions, energy, and spirit/essence.</li>
-              <li>Examine messages, beliefs, and internalized oppression.</li>
-              <li>Clarify needs, desires, hopes, fears, boundaries, and values.</li>
-              <li>Practice communication, negotiation, and accountability without blame or shame.</li>
-              <li>Set goals and intentions, identify strengths, and work through obstacles without a diagnosis or “fixing.”</li>
-              <li>Cultivate more love, kindness, and curiosity toward yourself and others.</li>
-              <li>Access a wealth of resources, tools, and referrals to other professionals as needed.</li>
-            </ul>
-          </div>
-          
-          <p class="lead">
-            Please notice that no nudity or sexual activity takes place in sessions.
-          </p>
-          
-          <p class="lead">
-            <strong>*An important note on “safety”:</strong>
-          </p>
-          
-          <p class="lead">
-            I use this word with intention. My work is rooted in reclaiming humanity within a society that often tries to strip it away. And acknowledging my humanity means acknowledging my limits: I cannot be a perfectly safe space for everyone, and every being in every moment. The same is true when I recognize the humanity of others: we are all capable of care, and we are all capable of harm.
-          </p>
-          
-          <p class="lead">
-            What I am committed to is this: I do not choose conscious harm, and when harm happens, I am committed to reduce it, be accountable, and repair.
-          </p>
-          
-          <p class="lead">
-            For that reason, I speak less about creating a “safe” space and more about cultivating a healing-oriented space, one shaped by intention, awareness, repair, and humanity rather than the impossible ideal of perfect safety.
-          </p>
-          
-          <p class="lead">
-            <strong>How Sex Coaching Engages All Parts of You</strong>
-          </p>
-          
-          <div class="centered-list">
-            <ul>
-              <li><strong>Mind:</strong> Explore how colonial, capitalist, patriarchal, and racial conditioning shape your thoughts, desires, expectations, and self-talk. Dismantle shame, performance pressure, and limiting beliefs while cultivating a liberated mindset centered on curiosity, consent, and your own values.</li>
-              <li><strong>Emotions:</strong> Reclaim feelings suppressed or pathologized by oppressive systems. Create space for authentic expression, intimacy, and self-compassion.</li>
-              <li><strong>Body & Body-Image:</strong> Examine societal, colonial, and ableist standards affecting pleasure and embodiment. Learn to understand and celebrate your sexual architecture (including body neutrality!), honor boundaries, and cultivate pleasure free from shame, comparison, or coercion.</li>
-              <li><strong>Energy:</strong> Sexual energy is personal and collective power, and it goes further than sexual desire and acts. Observe, cultivate, and direct it ethically for connection, creativity, and liberation.</li>
-              <li><strong>Spirit/Essence:</strong> Explore self-realization and experiences in ways that honor your spiritual framework/ethical values and the sacredness of desire, without hierarchy or cultural appropriation.</li>
-            </ul>
-          </div>
-          
-          <p class="lead">
-            <strong>What can Sex Coaching do for you?</strong>
-          </p>
-          
-          <p class="lead">
-            Sex coaching focuses on normalization, permission, education, action, solution, and skill-building, to create a healthier and more fulfilling reality. Examples of how it can help you:
-          </p>
-          
-          <div class="centered-list">
-            <ul>
-              <li>Reclaim your right to pleasure, especially for those who’ve faced and continue to face systemic and/or cultural oppression</li>
-              <li>Improve communication about sex, intimacy (non-sexual and sexual), and/or dating</li>
-              <li>Build a stronger sense of sexual self-worth, (body) confidence, and authentic expression</li>
-              <li>Understand your desires, wants, and boundaries</li>
-              <li>Gain clarity and support around identity shifts, or partnering transitions</li>
-              <li>Explore questions around gender identity and/or sexual orientation to feel more at ease embracing your authentic self</li>
-              <li>Rebuild intimacy after life changes, such as stress, kids, aging, etc.</li>
-              <li>Reduce performance anxiety and/or dating anxiety</li>
-              <li>Navigate mismatched desires, wants, and boundaries with partner(s)</li>
-              <li>Increase pleasure and explore new ways of connecting</li>
-              <li>Learn practical skills like touch techniques, arousal tools, communication scripts</li>
-              <li>Navigating sexual pain or dysfunction</li>
-            </ul>
-          </div>
-          
-          <p class="lead">
-            <strong>What’s the difference between (Sex) Coaching and (Sex) Therapy?</strong>
-          </p>
-          
-          <p class="lead">
-            Coaching is distinct from Therapy, though it can complement therapeutic or healing work, and is both educational and transformational. Coaching and Therapy are 100% compatible and complement each other extremely well. However, the two often get confused, so here’s the simple breakdown:
-          </p>
-          
-          <p class="lead">
-            <strong>Sex Coaching</strong> focuses on skills, education, and forward progress. It is present- and future-focused, and action-oriented—using exercises, communication tools, and guided practices. This modality is about improvement and overcoming roadblocks. Sex Coaching usually requires a certified sex coach or (clinical) sexologist. Sex Coaching is great for individuals or couples wanting better connection, pleasure, intimacy, and/or confidence.
-          </p>
-          
-          <p class="lead">
-            <strong>Sex Therapy</strong> focuses on mental health or clinical concerns. There could be diagnosing and treatment in therapy. This modality helps with deeper emotional wounds, traumas, and past experiences. Sex Therapy often requires a licensed therapist. Sex Therapy is great for those whose sexual challenges are rooted in emotional, psychological, or trauma-related experiences.
-          </p>
-          
-          <p class="lead">
-            <strong>Example of a Sex Coaching question versus Sex Therapy question:</strong><br>
-            Coaching: “How can I build the sex life I want?”<br>
-            Therapy: “Why am I struggling, and what deeper healing is needed?”
-          </p>
-          
+      <!-- (unchanged about content) -->
+      <!-- Leaving your full about copy exactly as you had it -->
+      <p class="lead"><strong>What is Sex or Sexistential Coaching?</strong></p>
+      <p class="lead">
+        Sexistential coaching, also called Sex, Intimacy & Relationship Coaching, focuses on sexuality and supports our human experience. PAUSE! Let me clarify one really important thing: sexuality is deeper than sex. Go ahead and read that again please, take a deep breath, and carry on.
+      </p>
+      <p class="lead">
+        We live in a strangely ironic society: a hypersexualized culture that sends us the message that we should all be having amazing, and endless sex; yet simultaneously treats sex and sexuality as taboo, shameful, or improper to speak about, and cancels the nature of humanity—therefore sexuality: expansiveness. I’m talking about the full continuity of sexuality and sex, from and to passing through everything in between and all the combinations!
+      </p>
+      <p class="lead">
+        In reality, we are sexual beings from birth to death, not because we’re meant to be sexualized at all times, but because we’re wired for connection, pleasure, and embodiment. No one is owed another person, but everyone is entitled to their own desire, their own pleasure, and their own consensual self-expression. These impulses aren’t problems to hide or distrust; they’re parts of being human. When we bring the “forbidden” into the light, especially in a society that’s both obsessed with sex and terrified of talking about it, we liberate us All: we make space for authenticity, “safety”/healing*, and the ability to shine, reducing harm.
+      </p>
+      <p class="lead">
+        During our sessions we lean into curiosity, and commit to an honest and authentic collaboration at your pace.
+      </p>
+      <p class="lead">
+        Sex Coaching is a guided process to:
+      </p>
+      <div class="centered-list">
+        <ul>
+          <li>Experience a healing-oriented, open, non-judgmental space to explore your sexual self.</li>
+          <li>Access accurate, personalized information about sex and sexuality.</li>
+          <li>Learn techniques and strategies to expand pleasure (mentally and physically) and connection with yourself and others.</li>
+          <li>Practice tuning into your whole self: mind, body, emotions, energy, and spirit/essence.</li>
+          <li>Examine messages, beliefs, and internalized oppression.</li>
+          <li>Clarify needs, desires, hopes, fears, boundaries, and values.</li>
+          <li>Practice communication, negotiation, and accountability without blame or shame.</li>
+          <li>Set goals and intentions, identify strengths, and work through obstacles without a diagnosis or “fixing.”</li>
+          <li>Cultivate more love, kindness, and curiosity toward yourself and others.</li>
+          <li>Access a wealth of resources, tools, and referrals to other professionals as needed.</li>
+        </ul>
+      </div>
+
+      <p class="lead">Please notice that no nudity or sexual activity takes place in sessions.</p>
+
+      <p class="lead"><strong>*An important note on “safety”:</strong></p>
+      <p class="lead">
+        I use this word with intention. My work is rooted in reclaiming humanity within a society that often tries to strip it away. And acknowledging my humanity means acknowledging my limits: I cannot be a perfectly safe space for everyone, and every being in every moment. The same is true when I recognize the humanity of others: we are all capable of care, and we are all capable of harm.
+      </p>
+      <p class="lead">
+        What I am committed to is this: I do not choose conscious harm, and when harm happens, I am committed to reduce it, be accountable, and repair.
+      </p>
+      <p class="lead">
+        For that reason, I speak less about creating a “safe” space and more about cultivating a healing-oriented space, one shaped by intention, awareness, repair, and humanity rather than the impossible ideal of perfect safety.
+      </p>
+      <p class="lead"><strong>How Sex Coaching Engages All Parts of You</strong></p>
+      <div class="centered-list">
+        <ul>
+          <li><strong>Mind:</strong> Explore how colonial, capitalist, patriarchal, and racial conditioning shape your thoughts, desires, expectations, and self-talk. Dismantle shame, performance pressure, and limiting beliefs while cultivating a liberated mindset centered on curiosity, consent, and your own values.</li>
+          <li><strong>Emotions:</strong> Reclaim feelings suppressed or pathologized by oppressive systems. Create space for authentic expression, intimacy, and self-compassion.</li>
+          <li><strong>Body &amp; Body-Image:</strong> Examine societal, colonial, and ableist standards affecting pleasure and embodiment. Learn to understand and celebrate your sexual architecture (including body neutrality!), honor boundaries, and cultivate pleasure free from shame, comparison, or coercion.</li>
+          <li><strong>Energy:</strong> Sexual energy is personal and collective power, and it goes further than sexual desire and acts. Observe, cultivate, and direct it ethically for connection, creativity, and liberation.</li>
+          <li><strong>Spirit/Essence:</strong> Explore self-realization and experiences in ways that honor your spiritual framework/ethical values and the sacredness of desire, without hierarchy or cultural appropriation.</li>
+        </ul>
+      </div>
+
+      <p class="lead"><strong>What can Sex Coaching do for you?</strong></p>
+      <p class="lead">
+        Sex coaching focuses on normalization, permission, education, action, solution, and skill-building, to create a healthier and more fulfilling reality. Examples of how it can help you:
+      </p>
+      <div class="centered-list">
+        <ul>
+          <li>Reclaim your right to pleasure, especially for those who’ve faced and continue to face systemic and/or cultural oppression</li>
+          <li>Improve communication about sex, intimacy (non-sexual and sexual), and/or dating</li>
+          <li>Build a stronger sense of sexual self-worth, (body) confidence, and authentic expression</li>
+          <li>Understand your desires, wants, and boundaries</li>
+          <li>Gain clarity and support around identity shifts, or partnering transitions</li>
+          <li>Explore questions around gender identity and/or sexual orientation to feel more at ease embracing your authentic self</li>
+          <li>Rebuild intimacy after life changes, such as stress, kids, aging, etc.</li>
+          <li>Reduce performance anxiety and/or dating anxiety</li>
+          <li>Navigate mismatched desires, wants, and boundaries with partner(s)</li>
+          <li>Increase pleasure and explore new ways of connecting</li>
+          <li>Learn practical skills like touch techniques, arousal tools, communication scripts</li>
+          <li>Navigating sexual pain or dysfunction</li>
+        </ul>
+      </div>
+
+      <p class="lead"><strong>What’s the difference between (Sex) Coaching and (Sex) Therapy?</strong></p>
+      <p class="lead">
+        Coaching is distinct from Therapy, though it can complement therapeutic or healing work, and is both educational and transformational. Coaching and Therapy are 100% compatible and complement each other extremely well. However, the two often get confused, so here’s the simple breakdown:
+      </p>
+      <p class="lead">
+        <strong>Sex Coaching</strong> focuses on skills, education, and forward progress. It is present- and future-focused, and action-oriented—using exercises, communication tools, and guided practices. This modality is about improvement and overcoming roadblocks. Sex Coaching usually requires a certified sex coach or (clinical) sexologist. Sex Coaching is great for individuals or couples wanting better connection, pleasure, intimacy, and/or confidence.
+      </p>
+      <p class="lead">
+        <strong>Sex Therapy</strong> focuses on mental health or clinical concerns. There could be diagnosing and treatment in therapy. This modality helps with deeper emotional wounds, traumas, and past experiences. Sex Therapy often requires a licensed therapist. Sex Therapy is great for those whose sexual challenges are rooted in emotional, psychological, or trauma-related experiences.
+      </p>
+      <p class="lead">
+        <strong>Example of a Sex Coaching question versus Sex Therapy question:</strong><br>
+        Coaching: “How can I build the sex life I want?”<br>
+        Therapy: “Why am I struggling, and what deeper healing is needed?”
+      </p>
     </section>
 
     <!-- Meet the Coach -->
     <section class="view" id="me">
+      <p class="lead">About Coach Pau: A Professional Guide for the Journey Back to Yourself</p>
       <p class="lead">
-        Meet The Coach and learn more about the approach. I'm a licensed sex therapist and coach with
-        a passion for helping people explore their sexuality and relationships.
+        My career path has been a global navigation chart, shaped by emigration, survival, and a deep belief in reinvention. I’ve built a life across two continents and five countries, collecting roles as a babysitter, a PhD student, a bartender, a teacher, a house cleaner, a non-profit program director empowering youth through dance, and… I even studied the anthropology of tourism, because why watch a travel documentary when you can academically deconstruct one?
+      </p>
+      <p class="lead">
+        A few years ago, a life-altering accident introduced me to two of my toughest teachers: invisible disability and chronic pain. They rerouted my journey, giving me a master's degree in resilience, grief, adaptation, and finding the quiet humor in a world not built for diverse bodies and brains -or any diversity whatsoever!
+      </p>
+      <p class="lead">
+        My formal training is rooted in evidence-based practice: I am a <b>Board-Certified Sexologist and a Certified Sex Coach.</b> This means you get a guide who is deeply grounded in the science of human sexuality, without ever losing the heart, humor, and humanity that make the work transformative.
+      </p>
+      <p class="lead">
+        Through it all, my core has remained the same: I am a fronterize (born and raised on a border) and a fisherman's grandkid. The border taught me that different cultures and languages share one humanity. The ocean, as my precious provider and place of worship, was my constant reminder of a power greater than us all.
+      </p>
+      <p class="lead">
+        This unique background is why I don’t just coach from a textbook. I coach from the "in-between" - a space I inhabit not just in my non-binary gender identity, but in all aspects of life. I’m the bridge between heart-led wisdom and strategic action, collective thinking and sacred solitude, and a good, energetically funny joke and a moment of reverence and deep, compassionate silence.
+      </p>
+      <p class="lead">
+        My mentors say I coach from a place of integrity and heart. My former clients describe my style as a blend of <b>empathetic guide, transparent communicator, and supportive truth-teller.</b> I specialize in creating a wholesome healing-oriented space and container, not so you can stay comfortable -within the discomfort of growth-, but so you can feel secure enough to do your bravest work and grow.
+      </p>
+      <p class="lead">
+        I walk this path with a sacred truth: while I am a unique human, I am not an original. I offer my unique perspective with deep gratitude, knowing that my wisdom is a tapestry woven from the threads of my ancestors, my families -both blood and chosen-, and all the communities and lands that have welcomed, raised, and nurtured me across continents.
+      </p>
+      <p class="lead">
+        When I'm not working, you’ll find me in motion: finding rhythm on an Afro-Latin social dance floor, practicing discipline and ego-death on a martial arts mat, or on a hiking trail, usually contemplating how it all connects.
+      </p>
+      <p class="lead">
+        In short: I’m a professional guide for your journey back to yourself and to the collective. I’ve done and continue to do my own homework to be a great companion on the path. Cannot wait to collaborate with you!
+      </p>
+      <p class="lead">
+        In partnership,<br>
+        Pau PC 
+        (pau/they/elu)
       </p>
     </section>
 
-    <!-- Contact -->
+    <!-- Contact (single, flat, with form + socials) -->
     <section class="view" id="contact">
-      <!-- <p class="lead">Send a note and I'll reply shortly:</p> -->
-     
-                <p class="lead">
-                    Let's Connect & Collaborate:</p>
-<p class="lead">
-I believe our greatest growth happens in connection. My door is always open for genuine inquiry and meaningful collaboration. Please find the relevant section below and don't hesitate to reach out.
-</p>
-<p class="lead"><b>
-For Seekers & Clients: A Safe Harbor for Your Questions.</b>
-Whether you are curious, concerned, or simply seeking guidance, I welcome your inquiries here. I provide a compassionate, confidential, and judgment-free space to discuss your needs related to pleasure, authenticity, and liberation.
-</p>
-<p class="lead">I welcome questions about:</p>
-<div class="centered-list">
-<ul>
-<li>My philosophy and approach to intimate well-being.</li>
-<li>Clarifying what my offerings include (and what they don't).</li>
-<li>Explore how we can collaborate to support your journey toward self-discovery.</li>
-<li>Any concerns about beginning this work.</li></ul></div>
-<p class="lead">
-Reaching out is a brave step. I am here to meet you in it with integrity and care.</p>
+      <p class="lead">
+        Let's Connect & Collaborate:
+      </p>
 
-<p class="lead"><b>For Fellow Practitioners: Building Bridges, Not Islands.</b>
-To my colleagues in intimacy, wellness, and liberation work: our field is deep and wide, and none of us should walk the path alone. I believe we rise by lifting each other, and I am actively seeking to grow my circle of co-conspirators in healing.
-</p>
-<p class="lead">
-I am excited to connect with you for:</p>
-<div class="centered-list">
-    <ul>
-<li>Collaboration: On workshops, writing projects, or client-centered initiatives.</li>
-<li>Peer Consultation: To safely discuss complex cases and share wisdom.</li>
-<li>Mutual Support: To build a network of trusted professionals for referrals and community care.</li>
-<li>Shared Learning: Because even the guide needs guides. I am always a student.</li></ul></div>
-<p class="lead">
-If you are a fellow professional grounded in ethics, consent, and a desire to uncolonize our practices, I would be honored to hear from you. Let's explore how we can support and strengthen each other's work.
-</p>
-      <form onsubmit="event.preventDefault(); alert('Thanks! I’ll get back to you soon.');">
-        <input type="email" placeholder="Your email" required />
-        <textarea placeholder="Your message" required></textarea>
+      <p class="lead"><b>
+        For Seekers & Clients: A Safe Harbor for Your Questions.
+      </b>
+        Whether you are curious, concerned, or simply seeking guidance, I welcome your inquiries here. I provide a compassionate, confidential, and judgment-free space to discuss your needs related to pleasure, authenticity, and liberation.
+      </p>
+
+      <p class="lead">I welcome questions about:</p>
+      <div class="centered-list">
+        <ul>
+          <li>My philosophy and approach to intimate well-being.</li>
+          <li>Clarifying what my offerings include (and what they don't).</li>
+          <li>Explore how we can collaborate to support your journey toward self-discovery.</li>
+          <li>Any concerns about beginning this work.</li>
+        </ul>
+      </div>
+
+      <p class="lead">
+        Reaching out is a brave step. I am here to meet you in it with integrity and care.
+      </p>
+
+      <p class="lead"><b>For Fellow Practitioners: Building Bridges, Not Islands.</b>
+        To my colleagues in intimacy, wellness, and liberation work: our field is deep and wide, and none of us should walk the path alone. I believe we rise by lifting each other, and I am actively seeking to grow my circle of co-conspirators in healing.
+      </p>
+
+      <p class="lead">
+        I am excited to connect with you for:
+      </p>
+      <div class="centered-list">
+        <ul>
+          <li>Collaboration: On workshops, writing projects, or client-centered initiatives.</li>
+          <li>Peer Consultation: To safely discuss complex cases and share wisdom.</li>
+          <li>Mutual Support: To build a network of trusted professionals for referrals and community care.</li>
+          <li>Shared Learning: Because even the guide needs guides. I am always a student.</li>
+        </ul>
+      </div>
+
+      <p class="lead">
+        If you are a fellow professional grounded in ethics, consent, and a desire to uncolonize our practices, I would be honored to hear from you. Let's explore how we can support and strengthen each other's work.
+      </p>
+
+      <p class="lead">Send a note and I'll reply shortly:</p>
+
+      <form 
+        action="https://formspree.io/f/meowgygb" 
+        method="POST"
+      >
+        <!-- honeypot -->
+        <input type="text" name="_gotcha" style="display:none;" aria-hidden="true" tabindex="-1" />
+
+        <input 
+          type="text" 
+          name="name" 
+          placeholder="Your name and pronouns" 
+          required
+        />
+
+        <input 
+          type="email" 
+          name="email" 
+          placeholder="Your email" 
+          required
+        />
+
+        <textarea 
+          name="message" 
+          placeholder="Your message" 
+          required
+        ></textarea>
+
         <button class="btn" type="submit">Send</button>
-      </form><br><br>
-      <p class="lead"><b>Pau PC | MTL Practice, LLC</b><br>
+      </form>
+
+      <br>
+
+      <p class="lead">
+        <b>Pau PC | MTL Practice, LLC</b><br>
         <a href="mailto:paupc@mtlpractice.com">paupc@mtlpractice.com</a><br> 
         <a href="tel:+16196309440">+1 619.630.9440</a><br>
-        <a href="https://www.instagram.com/mtlpractice/" target="_blank">IG @mtlpractice</a></p>
+        <a href="https://www.instagram.com/mtlpractice/" target="_blank">IG @mtlpractice</a>
+      </p>
     </section>
+
     <!-- Book -->
     <section class="view" id="book">
       <p class="lead">
@@ -642,30 +816,37 @@ If you are a fellow professional grounded in ethics, consent, and a desire to un
       <a class="btn" href="https://cal.com/mtlpractice/20min" target="_blank">
         Book Free Call
       </a>
-      <!-- <p class="note">
-        Prefer email? <a data-nav="contact" href="#contact">Contact me</a>
-      </p> -->
     </section>
   </main>
-  
-  
+
+  <!-- Bottom Nav (mobile only, below content) -->
+  <nav class="actions actions-bottom" aria-label="Section navigation (bottom)">
+    <a data-nav="me"    href="#me"     class="link-btn">Meet The Coach</a>
+    <a data-nav="about" href="#about"  class="link-btn">What's Sex Coaching</a>
+    <a data-nav="contact" href="#contact" class="link-btn">Contact Me</a>
+  </nav>
 </div>
+
 <footer class="page-footer">
-    <div class="footer-badges">
-      <div class="footer-left"> <a href="https://safespacealliance.com"
+  <div class="footer-badges">
+    <div class="footer-left">
+      <a href="https://safespacealliance.com"
         target="_blank"
         rel="noopener noreferrer"
         class="badge-link">
         <img src="safespaceb.png"
              alt="Safe Space"
-             class="footer-badge"></a>
-      </div>
+             class="footer-badge">
+      </a>
+    </div>
+
+
 
       <p class="footer-disclaimer">
           <b>Disclaimer:</b> Coaching is for education and personal development only and is not medical, psychological, or legal advice. Results are not guaranteed. No explicit content, nudity, or sexual activity occurs in any session.
           <br><b>Terms & Conditions:</b> By using this site or booking services, you confirm you are 18+ and responsible for your own decisions. Services are provided “as is,” and the coach is not liable for how information is used.
           <br><b>Privacy:</b> Basic personal information may be collected for scheduling and communication only and is not sold or shared except as required by law. Reasonable measures are used to protect your data.
-      </p>
+      <br>Background photo credit to <a href="www.michaeldphoto.com" target="_blank">Michael Dunn”</a> </p>
 
       <div class="footer-right">
         <a href="#" class="badge-link" onclick="return false;">
