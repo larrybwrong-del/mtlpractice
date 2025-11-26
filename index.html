@@ -93,6 +93,7 @@
     .site-logo img{
       width:28vw;
       max-width:96px;
+      position:absolute !important;
     }
   }
   
@@ -313,7 +314,7 @@
 /* Mobile: force fixed positioning + smaller image */
 @media (max-width:700px){
   .site-logo{
-    position:fixed !important;
+    position: absolute !important;
     top:12px !important;
     left:12px !important;
   }
@@ -470,11 +471,12 @@
 @media (max-width:700px){
   /* Show mobile Book button, centered under logo */
   .mobile-book-btn{
-    display:inline-flex;
+    display:inline;
     margin: 70px auto 10px;  /* space below fixed logo */
     justify-content:center;
     margin-top:20px;
     margin-left:120px;
+    min-width:150px;
     /* margin-top:-2px; */
   }
 
