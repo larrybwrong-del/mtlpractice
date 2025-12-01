@@ -136,6 +136,11 @@
     box-shadow:0 12px 40px rgba(0,0,0,.15);
     position:relative;
   }
+/* Make paragraph content left-aligned inside the bubble */
+.container p,
+.lead {
+  text-align: left;
+}
 
   /* Top row with Home button */
   .topbar{
@@ -1004,7 +1009,7 @@ The belief that multiple, conflicting truths can coexist.</li></ul></div>
     e.preventDefault();
     const target = link.getAttribute('data-nav');
     if(views[target]){
-      location.hash = target;
+    //   location.hash = target;
       show(target);
     }
   });
