@@ -136,11 +136,7 @@
     box-shadow:0 12px 40px rgba(0,0,0,.15);
     position:relative;
   }
-/* Make paragraph content left-aligned inside the bubble */
-.container p,
-.lead {
-  text-align: left;
-}
+
 
 /* Utility class: center text when needed */
 .p-center,
@@ -192,11 +188,15 @@ p.p-center {
   }
 
   .lead{
-    font-size:clamp(16px,2.6vw,18px);
-    line-height:1.4;
-    color:#1b281d;
-    margin:12px auto 24px;
-  }
+  font-size: clamp(17px, 2vw, 20px);
+  line-height: 1.4;
+  color:#1b281d;
+  margin: 12px auto 24px;
+  text-align: justify;
+  text-justify: inter-word;
+}
+
+
 
   .actions{
     display:flex; flex-wrap:nowrap; gap:10px;
@@ -357,7 +357,7 @@ p.p-center {
 
   h1{ font-size: clamp(30px, 4.1vw, 45px); }
   .tagline{ font-size: clamp(19px, 2.4vw, 25px); }
-  .lead{ font-size: clamp(17px, 2vw, 20px); line-height: 1.4; }
+
 
   @media (max-width:700px){
     .container{ padding: 14px 14px 18px; }
@@ -552,7 +552,7 @@ audio::-webkit-media-controls-enclosure {
 /* Make fields look like clean rounded bubbles */
 #contact input,
 #contact textarea{
-  width: 100%;
+  width: 98%;
   max-width: 100%;
   box-sizing: border-box;
   padding: 14px 16px;
@@ -589,6 +589,19 @@ audio::-webkit-media-controls-enclosure {
   .mobile-only{
     display:block;
   }
+}
+
+a {
+  color: #3f5b69;
+}
+
+/* a:hover {
+  color: #3b5663; /* optional darker hover } */
+/* Make the Michael Dunn credit link pop against footer background */
+.footer-disclaimer a {
+  color: #f1df97;        /* brighter, warm accent (matches FREE tag) */
+  font-weight: 600;
+  text-decoration: underline;
 }
 
 </style>
@@ -676,10 +689,10 @@ The belief that multiple, conflicting truths can coexist.</li></ul></div>
     <!-- About / Sex Coaching -->
     <section class="view" id="about">
 
-        <div class="mobile-only">
-        What is Sexistential Coaching?
+        <div class="mobile-only"><b>
+        What is Sexistential Coaching?</b><p class="lead">
         It’s intimacy, relationship, and sex coaching that supports your full human experience. Sexuality is deeper than sex: it's about our innate need for connection, pleasure, belonging, and embodiment.
-        We live in a society obsessed with sex yet terrified of talking about it honestly. This creates shame, inauthenticity, and . My coaching brings these "forbidden" topics into the light to liberate you, and therefore, us.
+        We live in a society obsessed with sex yet terrified of talking about it honestly. This creates shame, inauthenticity, and . My coaching brings these "forbidden" topics into the light to liberate you, and therefore, us.</p>
         <p class="lead"><b>In our sessions, we will:</b></p>
         <div class="centered-list">
             <ul>
@@ -795,7 +808,7 @@ The belief that multiple, conflicting truths can coexist.</li></ul></div>
     <section class="view" id="me">
         <div class="mobile-only">
 
-        <p class="lead"><b>About Coach Pau:</b></p>
+        <p class="lead"><b>About Coach Pau</b></p>
         <p class="lead">I am a <b>Board-Certified Sexologist and Certified Sex Coach</b>, here to guide you back to yourself.
             <p class="lead">My path has been shaped by a life across continents, invisible disability, and a deep belief in reinvention. I don't coach from a textbook, but from the "in-between"—a space I inhabit as a non-binary person who bridges heart-led wisdom and strategic action.
                 <p class="lead"><b>My style is a blend of empathetic guide, transparent communicator, and supportive truth-teller.</b> I create a healing-oriented space where you can feel secure enough to do your bravest work and grow.
@@ -807,7 +820,7 @@ The belief that multiple, conflicting truths can coexist.</li></ul></div>
     </div>  <div class="desktop-only">
 
 
-      <p class="lead">About Coach Pau: A Professional Guide for the Journey Back to Yourself</p>
+      <p class="lead"><b>About Coach Pau</b></p>
       <p class="lead">
         My career path has been a global navigation chart, shaped by emigration, survival, and a deep belief in reinvention. I’ve built a life across two continents and five countries, collecting roles as a babysitter, a PhD student, a bartender, a teacher, a house cleaner, a non-profit program director empowering youth through dance, and… I even studied the anthropology of tourism, because why watch a travel documentary when you can academically deconstruct one?
       </p>
@@ -844,51 +857,16 @@ The belief that multiple, conflicting truths can coexist.</li></ul></div>
 
     <!-- Contact (single, flat, with form + socials) -->
     <section class="view" id="contact">
-      <p class="lead">
-        Let's Connect & Collaborate:
-      </p>
+        <p class="lead"> Let’s Connect & Collaborate!  </p>
 
-      <p class="lead"><b>
-        For Seekers & Clients: A Safe Harbor for Your Questions.
-      </b>
-        Whether you are curious, concerned, or simply seeking guidance, I welcome your inquiries here. I provide a compassionate, confidential, and judgment-free space to discuss your needs related to pleasure, authenticity, and liberation.
-      </p>
-
-      <p class="lead">I welcome questions about:</p>
-      <div class="centered-list">
-        <ul>
-          <li>My philosophy and approach to intimate well-being.</li>
-          <li>Clarifying what my offerings include (and what they don't).</li>
-          <li>Explore how we can collaborate to support your journey toward self-discovery.</li>
-          <li>Any concerns about beginning this work.</li>
-        </ul>
-      </div>
-
-      <p class="lead">
-        Reaching out is a brave step. I am here to meet you in it with integrity and care.
-      </p>
-
-      <p class="lead"><b>For Fellow Practitioners: Building Bridges, Not Islands.</b>
-        To my colleagues in intimacy, wellness, and liberation work: our field is deep and wide, and none of us should walk the path alone. I believe we rise by lifting each other, and I am actively seeking to grow my circle of co-conspirators in healing.
-      </p>
-
-      <p class="lead">
-        I am excited to connect with you for:
-      </p>
-      <div class="centered-list">
-        <ul>
-          <li>Collaboration: On workshops, writing projects, or client-centered initiatives.</li>
-          <li>Peer Consultation: To safely discuss complex cases and share wisdom.</li>
-          <li>Mutual Support: To build a network of trusted professionals for referrals and community care.</li>
-          <li>Shared Learning: Because even the guide needs guides. I am always a student.</li>
-        </ul>
-      </div>
-
-      <p class="lead">
-        If you are a fellow professional grounded in ethics, consent, and a desire to uncolonize our practices, I would be honored to hear from you. Let's explore how we can support and strengthen each other's work.
-      </p>
-
-      <p class="lead">Send a note and I'll reply shortly:</p>
+        <p class="lead"><b>For Seekers & Clients:</b></p>
+        <p class="lead">This is a safe, confidential space for your questions about pleasure, authenticity, and liberation. I offer compassionate guidance to clarify my offerings, explore how we might work together, and address any concerns as you begin. Reaching out is brave—I’ll meet you there with care.  </p>
+        
+        <p class="lead"><b>For Fellow Practitioners:</b></p>
+        <p class="lead">To those in intimacy, wellness, and liberation work: let’s build bridges, not islands. I seek collaborations, peer consultations, mutual support, and shared learning with ethical professionals dedicated to consent and healing-centered practice. Let’s strengthen our work—together.  </p>
+        
+        <p class="lead">Send a note, and I’ll reply shortly.   </p>
+            
 
       <form 
         action="https://formspree.io/f/meowgygb" 
@@ -968,7 +946,7 @@ The belief that multiple, conflicting truths can coexist.</li></ul></div>
           <b>Disclaimer:</b> Coaching is for education and personal development only and is not medical, psychological, or legal advice. Results are not guaranteed. No explicit content, nudity, or sexual activity occurs in any session.
           <br><b>Terms & Conditions:</b> By using this site or booking services, you confirm you are 18+ and responsible for your own decisions. Services are provided “as is,” and the coach is not liable for how information is used.
           <br><b>Privacy:</b> Basic personal information may be collected for scheduling and communication only and is not sold or shared except as required by law. Reasonable measures are used to protect your data.
-      <br>Background photo credit to <a href="https://www.michaeldphoto.com" target="_blank">Michael Dunn”</a> </p>
+      <br><br><b>Background photo credit to <a href="https://www.michaeldphoto.com" target="_blank">Michael Dunn</a></b> </p>
 
       <div class="footer-right">
         <a href="https://directory.sexcoachu.com/listing/pau-pc-csc/"   target="_blank"
@@ -1011,15 +989,21 @@ The belief that multiple, conflicting truths can coexist.</li></ul></div>
   }
 
   document.addEventListener('click', (e)=>{
-    const link = e.target.closest('[data-nav]');
-    if(!link) return;
-    e.preventDefault();
-    const target = link.getAttribute('data-nav');
-    if(views[target]){
-    //   location.hash = target;
-      show(target);
-    }
-  });
+  const link = e.target.closest('[data-nav]');
+  if(!link) return;
+  e.preventDefault();
+  const target = link.getAttribute('data-nav');
+  if(views[target]){
+    show(target);
+
+    // Scroll page back to top (works great on mobile)
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }
+});
+
 
   homeBtn.addEventListener('click', ()=>{
     location.hash = '';
